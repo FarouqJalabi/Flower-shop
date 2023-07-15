@@ -60,7 +60,7 @@ export default function User() {
             </button>
           </form>
           <div>
-            <p className="text-gray-500 text-sm">Don't have an account?</p>
+            <p className="text-gray-500 text-sm">Don&apos;t have an account?</p>
             <a className="text-blue-500 underline">register here</a>
           </div>
         </section>

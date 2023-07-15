@@ -50,7 +50,7 @@ export default function FlowersPreview() {
         {/* <Flower info={example_info} />, we want the value not variable */}
         {example_ids.slice(scrolled * size, scrolled * size + size).map((v) => {
           example_info.id = v;
-          return <Flower {...example_info} />;
+          return <Flower {...example_info} key={v} />;
         })}
         <div
           className={`invisible ${
