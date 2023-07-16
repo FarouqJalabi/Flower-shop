@@ -1,11 +1,11 @@
 "use client";
 import Image from "next/image";
-import { useGlobalContext } from "@/app/context/store";
+import { useGlobalContext } from "@/app/contexts/contextProvider";
 import User from "./user";
 export default function Nav() {
   // const [heartAmount, setHeartAmount] = useCounter("heart");
   const { hearts } = useGlobalContext();
-  console.log("Run nav");
+  // console.log("Run nav");
   return (
     <nav className="flex gap-5 p-2">
       {/* We want this in one <a> tag for tabbing between links*/}

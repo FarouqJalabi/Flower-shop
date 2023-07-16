@@ -12,6 +12,18 @@ module.exports = {
         'gradient-conic':
           'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
       },
+      keyframes: {
+        // 0% 3 75
+        wiggle: {
+          '0%': { transform: 'translate(0px, 0)' , },
+          '25%': { transform: 'translate(-2px, 0)' , },
+          '75%': { transform: 'translate(2px, 0)',  },
+          '100%': {transform:'translate(2px, 0)', }
+        }
+      },
+      animation: {
+        wiggle: 'wiggle 200ms ease-in-out',
+      },
     },
     fontFamily: {
       'jua': ['var(--font-jua)'],

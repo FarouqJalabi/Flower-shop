@@ -1,17 +1,19 @@
 import Flower from "./flower";
 
 export interface FlowerInfo {
-  id: Number;
-  name: string;
+  id: string;
+  title: string;
+  imgUrl?: string;
   alt: string;
-  price: Number;
+  price: string;
+  salePrice?: string;
 }
 
 let example_info: FlowerInfo = {
-  id: 0,
-  name: "Anemone",
+  id: "0",
+  title: "Anemone",
   alt: "The white flower Anemone",
-  price: 49.99,
+  price: "49.99",
 };
 
 export default function Flowers() {
@@ -20,7 +22,7 @@ export default function Flowers() {
     <section className="grid grid-cols-4 gap-8">
       {/* <Flower info={example_info} />, we want the value not variable */}
       {example_ids.map((v) => {
-        example_info.id = v;
+        example_info.id = v.toString();
         return <Flower {...example_info} key={v} />;
       })}
     </section>
