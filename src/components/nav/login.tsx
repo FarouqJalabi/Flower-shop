@@ -29,6 +29,8 @@ export default function Login({ setLogin, setRegister }: props) {
       setErrorValue("Password is at least 8 letters");
     } else {
       // Everything went okay
+
+      setErrorValue("Loging you in...");
       const res = await signIn("credentials", {
         redirect: false,
 

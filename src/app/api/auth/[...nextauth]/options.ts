@@ -5,9 +5,12 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 export const options: NextAuthOptions = {
+  session: {
+    strategy: "jwt",
+  },
   pages: {
     signIn: "/?login",
-    // signOut: '/?signOut',
+    signOut: "/?signOut",
     // error: '/auth/error', // Error code passed in query string as ?error=
   },
   providers: [

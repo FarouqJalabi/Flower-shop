@@ -4,11 +4,12 @@ import LikeButton from "../likeButton";
 
 export default function Flower(Info: FlowerInfo) {
   const onSale = Info.salePrice == null;
+
   return (
     <div className="text-center">
-      <div className="relative w-72 h-40 bg-red-600 overflow-hidden  rounded-xl">
+      <div className="relative w-72 h-40 bg-gray-300 overflow-hidden  rounded-xl">
         <Image
-          src="/test.jpg"
+          src={Info.imgUrl ? Info.imgUrl : "/test.jpg"}
           alt={"Yellow flower"}
           fill
           // We don't know the breakpoints yet

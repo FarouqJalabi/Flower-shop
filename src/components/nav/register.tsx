@@ -47,6 +47,8 @@ export default function Register({ setLogin, setRegister }: props) {
       setErrorValue("The passwords don't match");
     } else {
       // Everything went okay, not same email
+
+      setErrorValue("Regestering you...");
       const res = await postUser();
       if (res.ok) {
         await signIn("credentials", {
