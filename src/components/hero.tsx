@@ -48,6 +48,7 @@ export default function Hero() {
             src={"/bigFlower.png"}
             alt={"A pink flower"}
             fill
+            sizes="30vw"
             style={{ objectFit: "contain" }}
           />
         </div>

@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { useState } from "react";
-
+import { signIn } from "next-auth/react";
 interface props {
   setLogin: React.Dispatch<React.SetStateAction<boolean>>;
   setRegister: React.Dispatch<React.SetStateAction<boolean>>;
@@ -16,8 +16,10 @@ export default function Register({ setLogin, setRegister }: props) {
   const [rePasswordValue, setRePasswordValue] = useState("");
   const [nameValue, setNameValue] = useState("");
 
+  const [errorValue, setErrorValue] = useState("");
+
   const postUser = async () => {
-    await fetch("api/postUser", {
+    return await fetch("api/postUser", {
       method: "POST",
       body: JSON.stringify({
         name: nameValue,
@@ -31,21 +33,35 @@ export default function Register({ setLogin, setRegister }: props) {
     //Valid email?
     if (nameValue == "") {
       setInvalidName(true);
+      setErrorValue("The name is required");
+    } else if (!/^[a-z]+$/i.test(nameValue)) {
+      setErrorValue("Name can only contain letters");
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailValue)) {
       setInvalidEmail(true);
-    } else if (passwordValue == "") {
+      setErrorValue("The email is invalid");
+    } else if (passwordValue.length < 8) {
       setInvalidPassword(true);
+      setErrorValue("The password must at least be 8 characters");
     } else if (passwordValue != rePasswordValue) {
       setInvalidRePassword(true);
+      setErrorValue("The passwords don't match");
     } else {
-      // Everything went okay
+      // Everything went okay, not same email
       const res = await postUser();
+      if (res.ok) {
+        await signIn("credentials", {
+          email: emailValue,
+          password: passwordValue,
+        });
+      } else {
+        setErrorValue("You have an account, please login");
+      }
     }
   };
 
   return (
     <div className="flex bg-[rgba(0,0,0,0.5)] w-full h-full fixed left-0 top-0 z-20 items-center justify-center ">
-      <section className="flex flex-col gap-4 bg-white p-8 h-min rounded-2xl">
+      <section className="flex flex-col gap-4 bg-white p-8 h-min rounded-2xl w-80">
         <div className="flex gap-3">
           <button className="p-2  justify-center w-full bg-black text-white rounded-lg flex gap-3">
             Sign in with
@@ -76,6 +92,7 @@ export default function Register({ setLogin, setRegister }: props) {
             }`}
             onChange={(e) => {
               setNameValue(e.target.value);
+              setErrorValue("");
               setInvalidName(false);
             }}
           />
@@ -87,6 +104,7 @@ export default function Register({ setLogin, setRegister }: props) {
 ${invalidEmail ? "animate-wiggle bg-red-500" : ""}`}
             onChange={(e) => {
               setEmailValue(e.target.value);
+              setErrorValue("");
               setInvalidEmail(false);
             }}
           />
@@ -99,6 +117,7 @@ ${invalidEmail ? "animate-wiggle bg-red-500" : ""}`}
 ${invalidPassword ? "animate-wiggle bg-red-500" : ""}`}
             onChange={(e) => {
               setPasswordValue(e.target.value);
+              setErrorValue("");
               setInvalidPassword(false);
             }}
           />
@@ -110,9 +129,18 @@ ${invalidPassword ? "animate-wiggle bg-red-500" : ""}`}
 ${invalidRePassword ? "animate-wiggle bg-red-500" : ""}`}
             onChange={(e) => {
               setRePasswordValue(e.target.value);
+              setErrorValue("");
               setInvalidRePassword(false);
             }}
           />
+
+          <p
+            className={`text-gray-500 text-sm ${
+              errorValue == "" ? "hidden" : ""
+            }`}
+          >
+            {errorValue}
+          </p>
           <button
             type="submit"
             className="p-2 w-full bg-black text-white rounded-lg mx-auto"

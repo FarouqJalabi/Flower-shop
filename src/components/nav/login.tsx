@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { useState } from "react";
-import { useSession, signIn, signOut } from "next-auth/react";
+import { signIn } from "next-auth/react";
 
 interface props {
   setLogin: React.Dispatch<React.SetStateAction<boolean>>;
@@ -8,9 +8,6 @@ interface props {
 }
 
 export default function Login({ setLogin, setRegister }: props) {
-  const { data: session, status } = useSession();
-  console.log(session, status);
-
   //Validations
   const [invalidEmail, setInvalidEmail] = useState(false);
   const [invalidPassword, setInvalidPassword] = useState(false);
@@ -18,22 +15,35 @@ export default function Login({ setLogin, setRegister }: props) {
   const [emailValue, setEmailValue] = useState("");
   const [passwordValue, setPasswordValue] = useState("");
 
-  const validLogin = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const [errorValue, setErrorValue] = useState("");
+
+  const validLogin = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     //Valid email?
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailValue)) {
       setInvalidEmail(true);
-    } else if (passwordValue == "") {
+      setErrorValue("The email is not valid");
+      console.log("WE?");
+    } else if (passwordValue.length < 8) {
       setInvalidPassword(true);
+      setErrorValue("Password is at least 8 letters");
     } else {
       // Everything went okay
-      setRegister(false);
+      const res = await signIn("credentials", {
+        redirect: false,
+
+        email: emailValue,
+        password: passwordValue,
+      });
+      if (res?.error) {
+        setErrorValue("Either the password or gmail is wrong");
+      }
     }
   };
 
   return (
     <div className="flex bg-[rgba(0,0,0,0.5)] w-full h-full fixed left-0 top-0 z-20 items-center justify-center ">
-      <section className="flex flex-col gap-4 bg-white p-8 h-min rounded-2xl">
+      <section className="flex flex-col gap-4 bg-white p-8 h-min rounded-2xl w-80">
         <div className="flex gap-3">
           <button className="p-2  justify-center w-full bg-black text-white rounded-lg flex gap-3">
             Login with
@@ -65,6 +75,7 @@ export default function Login({ setLogin, setRegister }: props) {
             onChange={(e) => {
               setEmailValue(e.target.value);
               setInvalidEmail(false);
+              setErrorValue("");
             }}
           />
 
@@ -78,8 +89,18 @@ export default function Login({ setLogin, setRegister }: props) {
             onChange={(e) => {
               setPasswordValue(e.target.value);
               setInvalidPassword(false);
+
+              setErrorValue("");
             }}
           />
+
+          <p
+            className={`text-gray-500 text-sm m-0 ${
+              errorValue == "" ? "hidden" : ""
+            }`}
+          >
+            {errorValue}
+          </p>
           <button
             type="submit"
             className="p-2 w-full bg-black text-white rounded-lg mx-auto"

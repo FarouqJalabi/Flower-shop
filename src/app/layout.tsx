@@ -31,12 +31,12 @@ export default function RootLayout({
     <html lang="en">
       {/*! ERROR comes from this  */}
       <body className={`${inter.className} ${jua.variable} overflow-x-hidden`}>
-        <GlobalContextProvider>
-          <NextAuthProvider>
+        <NextAuthProvider>
+          <GlobalContextProvider>
             <Nav />
             {children}
-          </NextAuthProvider>
-        </GlobalContextProvider>
+          </GlobalContextProvider>
+        </NextAuthProvider>
         <Footer />
       </body>
     </html>

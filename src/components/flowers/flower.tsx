@@ -1,13 +1,8 @@
 import Image from "next/image";
 import { FlowerInfo } from "."; // from index
 import LikeButton from "../likeButton";
-import { useSession } from "next-auth/react";
 
 export default function Flower(Info: FlowerInfo) {
-  const { data: session } = useSession();
-  console.log(session?.user);
-  console.log(session);
-  // console.log("Run flower")
   const onSale = Info.salePrice == null;
   return (
     <div className="text-center">
