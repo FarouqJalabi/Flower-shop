@@ -49,6 +49,7 @@ export default function Hero() {
             alt={"A pink flower"}
             fill
             sizes="30vw"
+            priority
             style={{ objectFit: "contain" }}
           />
         </div>

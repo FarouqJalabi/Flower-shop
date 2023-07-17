@@ -16,10 +16,10 @@ export default async function Home() {
 
         return (
           <FlowersPreview
+            key={v.id}
             header={v.title}
             secondHeader={v.title}
             collectionId={flowers}
-            key={v.id}
           />
         );
       })}
