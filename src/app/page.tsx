@@ -20,7 +20,7 @@ export default async function Home() {
           <FlowersPreview
             key={v.id}
             header={v.title}
-            secondHeader={v.title}
+            secondHeader={v.underTitle as string}
             collectionId={flowers}
           />
         );

@@ -28,7 +28,7 @@ export default function LikeButton({ id }: { id: string }) {
           hearts.has(id) ? removeHeart(id) : addHeart(id);
           likeFlower(!hearts.has(id));
         } else {
-          router.push("/?login");
+          router.push("/login");
         }
       }}
     >

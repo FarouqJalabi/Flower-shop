@@ -31,6 +31,8 @@ export default function Register() {
   const validLogin = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     //Valid email?
+
+    setInvalidEmail(false);
     if (nameValue == "") {
       setInvalidName(true);
       setErrorValue("The name is required");
@@ -59,6 +61,7 @@ export default function Register() {
         });
       } else {
         setErrorValue("You have an account, please login");
+        setInvalidEmail(true);
       }
     }
   };
