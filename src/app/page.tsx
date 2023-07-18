@@ -2,10 +2,6 @@ import Hero from "../components/hero";
 import FlowersPreview from "@/components/flowers/flowersPreview";
 import { PrismaClient } from "@prisma/client";
 
-import { getServerSession } from "next-auth";
-import { NextAuthOptions } from "next-auth";
-import { options } from "@/app/api/auth/[...nextauth]/options";
-
 const prisma = new PrismaClient();
 export default async function Home() {
   //Maybe get it from localStorage if there?

@@ -1,13 +1,10 @@
+"use client";
 import Image from "next/image";
 import { useState } from "react";
 import { signIn } from "next-auth/react";
+import Link from "next/link";
 
-interface props {
-  setLogin: React.Dispatch<React.SetStateAction<boolean>>;
-  setRegister: React.Dispatch<React.SetStateAction<boolean>>;
-}
-
-export default function Login({ setLogin, setRegister }: props) {
+export default function Login() {
   //Validations
   const [invalidEmail, setInvalidEmail] = useState(false);
   const [invalidPassword, setInvalidPassword] = useState(false);
@@ -32,8 +29,8 @@ export default function Login({ setLogin, setRegister }: props) {
 
       setErrorValue("Loging you in...");
       const res = await signIn("credentials", {
-        redirect: false,
-
+        redirect: true,
+        callbackUrl: "/",
         email: emailValue,
         password: passwordValue,
       });
@@ -44,7 +41,7 @@ export default function Login({ setLogin, setRegister }: props) {
   };
 
   return (
-    <div className="flex bg-[rgba(0,0,0,0.5)] w-full h-full fixed left-0 top-0 z-20 items-center justify-center ">
+    <div className="flex bg-gray-400 w-full h-full fixed left-0 top-0 z-20 items-center justify-center ">
       <section className="flex flex-col gap-4 bg-white p-8 h-min rounded-2xl w-80">
         <div className="flex gap-3">
           <button className="p-2  justify-center w-full bg-black text-white rounded-lg flex gap-3">
@@ -57,12 +54,12 @@ export default function Login({ setLogin, setRegister }: props) {
               className="my-auto"
             />
           </button>
-          <button
+          <Link
             className="text-2xl bg-pink-400 px-3 text-white rounded-md"
-            onClick={() => setLogin(false)}
+            href="/"
           >
             X
-          </button>
+          </Link>
         </div>
         <div className="bg-gray-300 rounded-full w-full h-1 mx-auto"></div>
 
@@ -113,15 +110,12 @@ export default function Login({ setLogin, setRegister }: props) {
         </form>
         <div>
           <p className="text-gray-500 text-sm">Don&apos;t have an account?</p>
-          <a
+          <Link
             className="text-blue-500 underline cursor-pointer"
-            onClick={() => {
-              setLogin(false);
-              setRegister(true);
-            }}
+            href={"/register"}
           >
             register here
-          </a>
+          </Link>
         </div>
       </section>
     </div>
