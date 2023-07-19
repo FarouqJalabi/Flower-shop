@@ -1,8 +1,14 @@
 "use client";
 import { signOut } from "next-auth/react";
 import Link from "next/link";
+import { useSession } from "next-auth/react";
+import { redirect } from "next/navigation";
 
 export default function SignOut() {
+  const { status } = useSession();
+  if (status == "unauthenticated") {
+    redirect("/");
+  }
   return (
     <div className="flex bg-gray-400 w-full h-full fixed left-0 top-0 z-20 items-center justify-center ">
       <section className="flex flex-col gap-4 bg-white p-8 h-min rounded-2xl w-56">

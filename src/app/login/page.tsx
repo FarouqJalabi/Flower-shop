@@ -1,13 +1,17 @@
 "use client";
 import Image from "next/image";
 import { useState } from "react";
-import { getProviders, signIn } from "next-auth/react";
+import { signIn } from "next-auth/react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
+import { redirect } from "next/navigation";
 
 export default async function Login() {
+  const { status } = useSession();
+  if (status == "authenticated") {
+    redirect("/");
+  }
   //Validations
-  const route = useRouter();
   const [invalidEmail, setInvalidEmail] = useState(false);
   const [invalidPassword, setInvalidPassword] = useState(false);
 
@@ -44,7 +48,7 @@ export default async function Login() {
         setInvalidEmail(true);
         setInvalidPassword(true);
       } else {
-        route.push("/");
+        redirect("/");
       }
     }
   };
