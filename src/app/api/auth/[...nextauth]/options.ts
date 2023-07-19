@@ -43,7 +43,7 @@ export const options: NextAuthOptions = {
   ],
   callbacks: {
     async signIn({ account, profile }) {
-      console.log(account?.provider == "google", profile != null, "GOgle");
+      // console.log(account?.provider == "google", profile != null, "GOgle");
       if (account?.provider === "google" && profile != null) {
         let prisma_user = await prisma.user.upsert({
           where: { email: profile.email! },

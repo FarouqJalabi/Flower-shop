@@ -2,66 +2,71 @@
 import Image from "next/image";
 import { useState } from "react";
 import { signIn } from "next-auth/react";
-
 import Link from "next/link";
-import { redirect } from "next/navigation";
 import { useSession } from "next-auth/react";
+
+import { FormEvent } from "react";
+import { useRouter } from "next/navigation";
+
 export default function Register() {
+  const route = useRouter();
+
   const { status } = useSession();
   if (status == "authenticated") {
-    redirect("/");
+    route.push("/");
   }
   const [invalidEmail, setInvalidEmail] = useState(false);
   const [invalidPassword, setInvalidPassword] = useState(false);
   const [invalidRePassword, setInvalidRePassword] = useState(false);
   const [invalidName, setInvalidName] = useState(false);
 
-  const [emailValue, setEmailValue] = useState("");
-  const [passwordValue, setPasswordValue] = useState("");
-  const [rePasswordValue, setRePasswordValue] = useState("");
-  const [nameValue, setNameValue] = useState("");
-
   const [errorValue, setErrorValue] = useState("");
 
-  const postUser = async () => {
+  console.log("WHy refershing!");
+
+  const postUser = async (name: string, password: string, email: string) => {
     return await fetch("api/postUser", {
       method: "POST",
       body: JSON.stringify({
-        name: nameValue,
-        email: emailValue,
-        password: passwordValue,
+        name: name,
+        email: email,
+        password: password,
       }),
     });
   };
-  const validLogin = async (e: React.MouseEvent<HTMLButtonElement>) => {
+  const validRegister = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    //Valid email?
-    setInvalidEmail(false);
-    if (nameValue == "") {
+    let formObject = new FormData(e.currentTarget);
+    let formData = Object.fromEntries(formObject);
+    if (formData.name.length < 2) {
       setInvalidName(true);
       setErrorValue("The name is required");
-    } else if (!/^[a-zA-Z ]*$/.test(nameValue)) {
+    } else if (!/^[a-zA-Z ]*$/.test(formData.name as string)) {
       setErrorValue("Name can only contain letters");
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailValue)) {
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email as string)) {
       setInvalidEmail(true);
       setErrorValue("The email is invalid");
-    } else if (passwordValue.length < 8) {
+    } else if (formData.password.length < 8) {
       setInvalidPassword(true);
       setErrorValue("The password must at least be 8 characters");
-    } else if (passwordValue != rePasswordValue) {
+    } else if (formData.password != formData.rePassword) {
       setInvalidRePassword(true);
       setErrorValue("The passwords don't match");
     } else {
       // Everything went okay, not same email
 
       setErrorValue("Regestering you...");
-      const res = await postUser();
+      const res = await postUser(
+        formData.name as string,
+        formData.password as string,
+        formData.email as string
+      );
       if (res.ok) {
         await signIn("credentials", {
           redirect: true,
           callbackUrl: "/",
-          email: emailValue,
-          password: passwordValue,
+          email: formData.email,
+          password: formData.password,
         });
       } else {
         setErrorValue("You have an account, please login");
@@ -97,15 +102,15 @@ export default function Register() {
 
         <div className="bg-gray-300 rounded-full w-full h-1 mx-auto"></div>
 
-        <form className="flex flex-col gap-4">
+        <form className="flex flex-col gap-4" onSubmit={validRegister}>
           <input
             placeholder="Name"
-            id="username"
+            name="name"
             className={`bg-gray-200 focus:border-none focus:outline-none p-2 rounded-md ${
               invalidName ? "animate-wiggle bg-red-500" : ""
             }`}
-            onChange={(e) => {
-              setNameValue(e.target.value);
+            onChange={() => {
+              // setNameValue(e.target.value);
               setErrorValue("");
               setInvalidName(false);
             }}
@@ -113,11 +118,11 @@ export default function Register() {
           <input
             type="email"
             placeholder="example@mail.com"
-            id="username"
+            name="email"
             className={`bg-gray-200 focus:border-none focus:outline-none p-2 rounded-md 
 ${invalidEmail ? "animate-wiggle bg-red-500" : ""}`}
-            onChange={(e) => {
-              setEmailValue(e.target.value);
+            onChange={() => {
+              // setEmailValue(e.target.value);
               setErrorValue("");
               setInvalidEmail(false);
             }}
@@ -126,11 +131,11 @@ ${invalidEmail ? "animate-wiggle bg-red-500" : ""}`}
           <input
             type="password"
             placeholder="Password"
-            id="password"
+            name="password"
             className={`bg-gray-200 focus:border-none focus:outline-none p-2 rounded-md
 ${invalidPassword ? "animate-wiggle bg-red-500" : ""}`}
-            onChange={(e) => {
-              setPasswordValue(e.target.value);
+            onChange={() => {
+              // setPasswordValue(e.target.value);
               setErrorValue("");
               setInvalidPassword(false);
             }}
@@ -138,11 +143,11 @@ ${invalidPassword ? "animate-wiggle bg-red-500" : ""}`}
           <input
             type="password"
             placeholder="Retype password"
-            id="password"
+            name="rePassword"
             className={`bg-gray-200 focus:border-none focus:outline-none p-2 rounded-md
 ${invalidRePassword ? "animate-wiggle bg-red-500" : ""}`}
-            onChange={(e) => {
-              setRePasswordValue(e.target.value);
+            onChange={() => {
+              // setRePasswordValue(e.target.value);
               setErrorValue("");
               setInvalidRePassword(false);
             }}
@@ -158,7 +163,6 @@ ${invalidRePassword ? "animate-wiggle bg-red-500" : ""}`}
           <button
             type="submit"
             className="p-2 w-full bg-black text-white rounded-lg mx-auto"
-            onClick={validLogin}
           >
             Sign up with email
           </button>
