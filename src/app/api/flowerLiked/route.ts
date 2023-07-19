@@ -1,8 +1,6 @@
-import { PrismaClient } from "@prisma/client";
 import { getToken } from "next-auth/jwt";
 import { NextRequest, NextResponse } from "next/server";
-
-const prisma = new PrismaClient();
+import { prisma } from "@/app/db";
 
 export async function POST(req: NextRequest) {
   const token = await getToken({ req });
@@ -12,6 +10,9 @@ export async function POST(req: NextRequest) {
     const tokenValues = JSON.stringify(token, null, 2);
     const userId = JSON.parse(tokenValues).accessToken;
 
+    console.log("Info got");
+    console.log(JSON.parse(tokenValues).accessToken);
+    console.log(JSON.parse(tokenValues));
     const res = await prisma.user.update({
       where: { id: userId },
       data: {

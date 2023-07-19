@@ -1,8 +1,7 @@
 import Hero from "@//components/hero";
 import FlowersPreviewEdit from "@/components/flowers/flowersPreviewEdit";
-import { PrismaClient } from "@prisma/client";
+import { prisma } from "../db";
 
-const prisma = new PrismaClient();
 export default async function Home() {
   //Maybe get it from localStorage if there?
   //   const flowerPreviews = await prisma.flowerPreviews.findMany();

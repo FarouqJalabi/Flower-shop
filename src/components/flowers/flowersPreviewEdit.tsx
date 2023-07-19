@@ -17,7 +17,6 @@ export default function FlowersPreviewEdit() {
         <form
           onSubmit={async (e) => {
             e.preventDefault();
-            console.log("Sent from adminEditor");
             let formObject = new FormData(e.currentTarget);
             let formData = Object.fromEntries(formObject);
 
@@ -50,7 +49,6 @@ export default function FlowersPreviewEdit() {
                     });
                 });
               });
-            console.log("Everything should be uploaded!");
           }}
           className="flex"
         >
@@ -78,7 +76,6 @@ export default function FlowersPreviewEdit() {
               type="submit"
               className="bg-black text-white text-xl rounded-lg p-2"
               onClick={async () => {
-                console.log("Sent to revalidate");
                 await fetch("api/post", {
                   method: "POST",
                   body: JSON.stringify({}),

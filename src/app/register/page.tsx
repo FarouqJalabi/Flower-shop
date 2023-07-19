@@ -69,7 +69,10 @@ export default function Register() {
     <div className="flex bg-gray-400 w-full h-full fixed left-0 top-0 z-20 items-center justify-center ">
       <section className="flex flex-col gap-4 bg-white p-8 h-min rounded-2xl w-80">
         <div className="flex gap-3">
-          <button className="p-2  justify-center w-full bg-black text-white rounded-lg flex gap-3">
+          <button
+            className="p-2  justify-center w-full bg-black text-white rounded-lg flex gap-3"
+            onClick={() => signIn("google")}
+          >
             Sign in with
             <Image
               src={"/google.svg"}

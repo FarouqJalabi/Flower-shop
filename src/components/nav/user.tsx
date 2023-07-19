@@ -5,9 +5,7 @@ import Link from "next/link";
 
 export default function User() {
   //Maybe get server session
-  const { status, data } = useSession();
-
-  console.log(status, data);
+  const { status } = useSession();
 
   return (
     <>

@@ -23,17 +23,14 @@ model FlowerPreviews {
 }
 
 model Flower {
-  id     String  @id @default(cuid())
-  title  String
-  imgUrl String? //Just use  
-
-  alt       String?
-  salePrice Float?
+  id        String @id @default(cuid())
+  title     String
   price     Float
+  alt       String
+  salePrice Float?
 
   users User[]
 
   flowerPreview   FlowerPreviews? @relation(fields: [flowerPreviewId], references: [id])
   flowerPreviewId String?
-  userId          String?
 }
