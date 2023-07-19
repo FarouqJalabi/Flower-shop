@@ -31,7 +31,6 @@ export default function Register() {
   const validLogin = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     //Valid email?
-
     setInvalidEmail(false);
     if (nameValue == "") {
       setInvalidName(true);

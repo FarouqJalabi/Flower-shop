@@ -7,7 +7,6 @@ const prisma = new PrismaClient();
 export async function POST(req: NextRequest) {
   const token = await getToken({ req });
   const body = await req.json();
-
   const { flowerId, flowerLiked } = body;
   if (token) {
     const tokenValues = JSON.stringify(token, null, 2);
