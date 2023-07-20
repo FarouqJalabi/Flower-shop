@@ -1,19 +1,10 @@
 import Flower from "./flower";
 
-export interface FlowerInfo {
-  id: string;
-  title: string;
-  imgUrl?: string;
-  alt: string;
-  price: string;
-  salePrice?: string;
-}
-
 let example_info: FlowerInfo = {
   id: "0",
   title: "Anemone",
   alt: "The white flower Anemone",
-  price: "49.99",
+  price: 49.99,
 };
 
 export default function Flowers() {

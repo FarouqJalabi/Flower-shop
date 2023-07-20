@@ -13,7 +13,9 @@ export async function POST(req: NextRequest) {
 
     if (userEmail === "admin@hotmail.com") {
       let { formData, flowersData } = body;
-      if (formData || flowersData) {
+      console.log("formData: ", formData);
+      console.log("flowerData: ", flowersData);
+      if (formData) {
         // console.log(formData, "formData");
         flowersData = flowersData.filter((flower: any) => {
           flower.price = Number(flower.price);

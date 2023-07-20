@@ -77,7 +77,7 @@ export default function Login() {
             />
           </button>
           <Link
-            className="text-2xl bg-pink-400 px-3 text-white rounded-md"
+            className="text-2xl bg-pink-400 px-3 py-1 text-white rounded-md  my-auto "
             href="/"
           >
             X
