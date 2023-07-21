@@ -34,7 +34,7 @@ export const GlobalContextProvider = ({ children }: Props) => {
   const [hearts, setHearts] = useState<Set<string>>(new Set([]));
 
   useEffect(() => {
-    fetch("api/flowerLiked", {
+    fetch("/api/flowerLiked", {
       method: "GET",
     })
       .then((res) => res.json())

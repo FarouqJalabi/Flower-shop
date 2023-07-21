@@ -22,7 +22,7 @@ export default function LikeButton({ id }: { id: string }) {
   };
   return (
     <button
-      className="relative ml-auto my-auto w-10 aspect-square "
+      className="relative ml-auto my-auto w-10 aspect-square z-10"
       onClick={() => {
         if (status === "authenticated") {
           hearts.has(id) ? removeHeart(id) : addHeart(id);

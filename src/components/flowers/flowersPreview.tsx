@@ -11,8 +11,9 @@ interface props {
   id?: string;
 }
 
-// ! Shouldn't be any
+//Loadig the colors for tailwind
 const test = "bg-orange-500 bg-orange-300";
+
 export default function FlowersPreview({
   header,
   secondHeader,

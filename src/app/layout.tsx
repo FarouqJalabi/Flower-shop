@@ -19,6 +19,7 @@ const jua = Jua({
   subsets: ["latin"],
   weight: "400",
   variable: "--font-jua",
+  preload: true,
 });
 
 export default function RootLayout({
