@@ -19,7 +19,9 @@ export default async function Home() {
             header={v.title}
             secondHeader={v.underTitle as string}
             collectionId={v.flowers}
-            // color="orange"
+            color={v.color!}
+            alt={v.alt!}
+            id={v.id}
           />
         );
       })}

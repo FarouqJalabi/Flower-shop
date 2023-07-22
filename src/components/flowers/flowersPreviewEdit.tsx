@@ -19,8 +19,13 @@ export default function FlowersPreviewEdit() {
         <form
           onSubmit={async (e) => {
             e.preventDefault();
-            let formObject = new FormData(e.currentTarget);
+            let formObject = new FormData(e.currentTarget as HTMLFormElement);
             let formData = Object.fromEntries(formObject);
+
+            if (formData.color == "NONE") {
+              delete formData.color;
+              delete formData.img;
+            }
 
             let flowersElement = Array.from(
               flowerRef.current?.getElementsByClassName(
@@ -46,16 +51,24 @@ export default function FlowersPreviewEdit() {
               .then(async (res) => {
                 console.log(res);
                 setLoadingStatus("Posting images...");
-                await res.forEach(async (id: string, i: number) => {
+                await res.flowersId.forEach(async (id: string, i: number) => {
                   const { data, error } = await supabase.storage
                     .from("flower_images")
                     .upload(id + ".jpg", flowersData[i].img, {
                       upsert: false,
                     });
                 });
-
-                setLoadingStatus("Done! Check out the main page for changes");
+                if (formData.color != "NONE") {
+                  const { data, error } = await supabase.storage
+                    .from("preview_images")
+                    .upload(res.previewId + ".jpg", formData.img, {
+                      upsert: false,
+                    });
+                }
+                console.log("Should be sent up");
               });
+
+            setLoadingStatus("Done! Check out the main page for changes");
           }}
           className="flex"
         >
@@ -73,6 +86,38 @@ export default function FlowersPreviewEdit() {
               className="text-lg border-2 border-black p-2"
             />
 
+            <input
+              type="file"
+              name="img"
+              className="text-lg border-2 border-black p-2"
+            />
+
+            <input
+              type="text"
+              name="alt"
+              placeholder="alt"
+              className="text-lg border-2 border-black p-2"
+            />
+
+            <div className="flex gap-2">
+              <label htmlFor="color" className="text-lg my-auto">
+                color:
+              </label>
+              <select
+                name="color"
+                id="color"
+                placeholder="none"
+                className="text-lg border-2 border-black p-2 w-full"
+              >
+                <option value="NONE">none</option>
+                <option value="ORANGE">orange</option>
+                <option value="RED">red</option>
+                <option value="GREEN">green</option>
+                <option value="BLUE">blue</option>
+                <option value="PURPLE">purple</option>
+                <option value="PINK">pink</option>
+              </select>
+            </div>
             <button
               type="submit"
               className="bg-black text-white text-xl rounded-lg p-2"

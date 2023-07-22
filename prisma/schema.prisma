@@ -7,31 +7,63 @@ generator client {
   provider = "prisma-client-js"
 }
 
-model User {
-  id       String @id @default(cuid())
-  email    String @unique
-  name     String
-  password String
+enum AuthProvider {
+  EMAIL
+  GOOGLE
+}
 
-  flowersLiked Flower[]
+model User {
+  id           String       @id @default(cuid())
+  email        String       @unique
+  name         String
+  AuthProvider AuthProvider @default(EMAIL)
+
+  password String?
+
+  flowersLiked Flower[] @relation("flowersLiked")
+  shoppingList Flower[] @relation("shoppingList")
+}
+
+enum PreviewColors {
+  ORANGE
+  RED
+  GREEN
+  BLUE
+  PURPLE
+  PINK
 }
 
 model FlowerPreviews {
-  id         String   @id @default(cuid())
+  id         String  @id @default(cuid())
   title      String
   underTitle String?
-  flowers    Flower[]
+  alt        String?
+
+  color PreviewColors?
+
+  flowers Flower[]
 }
 
 model Flower {
-  id        String @id @default(cuid())
-  title     String
+  id          String @id @default(cuid())
+  title       String
+  description String
+
   price     Float
-  alt       String
   salePrice Float?
 
-  users User[]
+  alt String
+
+  users        User[] @relation("flowersLiked")
+  shoppingList User[] @relation("shoppingList")
+
+  tags Tags[]
 
   flowerPreview   FlowerPreviews? @relation(fields: [flowerPreviewId], references: [id])
   flowerPreviewId String?
+}
+
+model Tags {
+  id     String   @id @default(cuid())
+  Flower Flower[]
 }

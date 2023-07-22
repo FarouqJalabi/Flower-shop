@@ -7,7 +7,7 @@ const nextConfig = {
         protocol: 'https',
         hostname: 'eljnfbtxmeteozramfkt.supabase.co',
         // port: '',
-        pathname: '**/public/flower_images/**',
+        pathname: '**/public/**',
       },
     ],
     }

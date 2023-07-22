@@ -10,7 +10,6 @@ export default function FlowerEdit() {
       <input
         type="file"
         name="img"
-        id=""
         className="text-xl border-2 border-black p-2"
       />
 
@@ -18,6 +17,12 @@ export default function FlowerEdit() {
         type="text"
         name="alt"
         placeholder="alt text"
+        className="text-xl border-2 border-black p-2"
+      />
+      <textarea
+        rows={3}
+        name="description"
+        placeholder="Description"
         className="text-xl border-2 border-black p-2"
       />
       <input

@@ -27,13 +27,7 @@ export default async function Page(props: any) {
       <div className="flex-1 px-2 flex flex-col">
         <h1 className="text-3xl">{Info.title}</h1>
         <h2 className="text-2xl">{Info.price}</h2>
-        <p>
-          This is just example form flower bla blac blac. This is the best
-          flower we have. buy it buy it. It is yellow and beatifull. This is
-          just some example text
-        </p>
-        <br />
-        <p>We should sell this at night blac blac slkdfj </p>
+        <p>{Info.description}</p>
         <div className="mt-auto">
           <button className="bg-black text-white font-jua text-3xl p-2 rounded-2xl w-full">
             Add to shopping cart

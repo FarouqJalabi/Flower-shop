@@ -13,20 +13,18 @@ export async function POST(req: NextRequest) {
 
     if (userEmail === "admin@hotmail.com") {
       let { formData, flowersData } = body;
-      console.log("formData: ", formData);
-      console.log("flowerData: ", flowersData);
       if (formData) {
-        // console.log(formData, "formData");
         flowersData = flowersData.filter((flower: any) => {
           flower.price = Number(flower.price);
           flower.salePrice = Number(flower.salePrice);
           delete flower.img;
           return true;
         });
+        delete formData.img;
+
         const flowerPreview_res = await prisma.flowerPreviews.create({
           data: {
-            title: formData.title,
-            underTitle: formData.underTitle,
+            ...formData,
             flowers: {
               create: [...flowersData],
             },
@@ -40,7 +38,12 @@ export async function POST(req: NextRequest) {
           return flower.id;
         });
 
-        return new Response(JSON.stringify(flower_id));
+        return new Response(
+          JSON.stringify({
+            flowersId: flower_id,
+            previewId: flowerPreview_res.id,
+          })
+        );
       }
 
       revalidatePath("/");
