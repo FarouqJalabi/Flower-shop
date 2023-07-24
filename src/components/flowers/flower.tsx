@@ -49,7 +49,7 @@ export default function Flower(Info: FlowerInfo) {
           </div>
         </Link>
 
-        <LikeButton id={Info.id} />
+        <LikeButton id={Info.id} user={Info.users!} />
       </div>
     </div>
   );

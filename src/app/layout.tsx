@@ -4,7 +4,6 @@ import { Inter, Jua } from "next/font/google";
 import Nav from "../components/nav";
 import Footer from "../components/footer";
 
-import { GlobalContextProvider } from "./contexts/contextProvider";
 import { NextAuthProvider } from "./contexts/authProvider";
 
 import { Metadata } from "next";
@@ -32,10 +31,8 @@ export default function RootLayout({
       {/*! ERROR comes from this  */}
       <body className={`${inter.className} ${jua.variable} overflow-x-hidden`}>
         <NextAuthProvider>
-          <GlobalContextProvider>
-            <Nav />
-            {children}
-          </GlobalContextProvider>
+          <Nav />
+          {children}
         </NextAuthProvider>
         <Footer />
       </body>

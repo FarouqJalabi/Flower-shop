@@ -25,34 +25,40 @@ export default function FlowersPreview({
   id,
 }: props) {
   const scroll_speed = 500;
-
-  color = color.toLowerCase();
+  if (color) {
+    color = color.toLowerCase();
+  } else {
+    color = "none";
+  }
   return (
     <section>
-      <div
-        className={`bg-${color}-500 flex px-4 sm:px-10 pt-10 justify-center ${
-          color == "none" ? "hidden" : ""
-        }`}
-      >
-        <div className="flex-1  max-sm:pb-4 sm:px-16 pt-16">
-          <h1 className="text-3xl font-bold">{header}</h1>
-          <p className="text-lg ">{secondHeader}</p>
-          <Link href={"/"} className="underline text-black ml-auto my-auto ">
-            {"See more ➜"}
-          </Link>
+      {color != "none" && (
+        <div
+          className={`bg-${color}-500 flex px-4 sm:px-10 pt-10 justify-center ${
+            color == "none" ? "hidden" : ""
+          }`}
+        >
+          <div className="flex-1  max-sm:pb-4 sm:px-16 pt-16">
+            <h1 className="text-3xl font-bold">{header}</h1>
+            <p className="text-lg ">{secondHeader}</p>
+            <Link href={"/"} className="underline text-black ml-auto my-auto ">
+              {"See more ➜"}
+            </Link>
+          </div>
+          <Image
+            src={
+              "https://eljnfbtxmeteozramfkt.supabase.co/storage/v1/object/public/preview_images/" +
+              id +
+              ".jpg"
+            }
+            alt={alt!}
+            width={480}
+            height={300}
+            className="object-cover flex-1 max-sm:w-12 w-64 max-w-full "
+          />
         </div>
-        <Image
-          src={
-            "https://eljnfbtxmeteozramfkt.supabase.co/storage/v1/object/public/preview_images/" +
-            id +
-            ".jpg"
-          }
-          alt={alt!}
-          width={480}
-          height={300}
-          className="object-cover flex-1 max-sm:w-12 w-64 max-w-full "
-        />
-      </div>
+      )}
+
       <div className={`flex py-2 px-16 ${color == "none" ? "" : "hidden"}`}>
         <div>
           <h1 className="text-2xl font-extrabold">{header}</h1>

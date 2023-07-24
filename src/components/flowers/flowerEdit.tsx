@@ -1,4 +1,7 @@
-export default function FlowerEdit() {
+interface props {
+  tags: Array<string>;
+}
+export default function FlowerEdit({ tags }: props) {
   return (
     <form className="flex flex-col gap-2 w-64 flowerEdit">
       <input
@@ -40,6 +43,16 @@ export default function FlowerEdit() {
         min={0}
         className="text-xl border-2 border-black p-2"
       />
+      <div className="flex flex-col">
+        {tags.map((v: string) => {
+          return (
+            <div>
+              <input type="checkbox" name={`tag${v}`} key={v} id={v} />
+              <label htmlFor={v}>{v}</label>
+            </div>
+          );
+        })}
+      </div>
     </form>
   );
 }

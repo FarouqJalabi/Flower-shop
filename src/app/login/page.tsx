@@ -11,10 +11,9 @@ export default function Login() {
   const route = useRouter();
   const { status } = useSession();
   if (status == "authenticated") {
-    route.push("/");
+    route.push("/signout");
   }
 
-  console.log("WHy refershing!");
   //Validations
   const [invalidEmail, setInvalidEmail] = useState(false);
   const [invalidPassword, setInvalidPassword] = useState(false);
@@ -25,8 +24,6 @@ export default function Login() {
     e.preventDefault();
     let formObject = new FormData(e.currentTarget);
     let formData = Object.fromEntries(formObject);
-
-    console.log(formData);
     //Valid email?
 
     setInvalidEmail(false);
@@ -39,7 +36,6 @@ export default function Login() {
       setErrorValue("Password is at least 8 letters");
     } else {
       // Everything went okay
-      console.log("HWER");
       setErrorValue("Loging you in...");
       const res = await signIn("credentials", {
         redirect: false,

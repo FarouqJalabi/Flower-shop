@@ -2,12 +2,25 @@ import Hero from "../components/hero";
 import FlowersPreview from "@/components/flowers/flowersPreview";
 import { prisma } from "./db";
 
+import { getServerSession } from "next-auth";
+import { options } from "@/app/api/auth/[...nextauth]/options";
+
 export default async function Home() {
-  //Maybe get it from localStorage if there?
-  const flowerPreviews = await prisma.flowerPreviews.findMany({
-    include: { flowers: { include: { users: { select: { id: true } } } } },
+  const data = await getServerSession(options);
+  if (data != null) {
+  }
+  let flowerPreviews = await prisma.flowerPreviews.findMany({
+    include: {
+      flowers: {
+        include: {
+          users: {
+            where: { id: data?.accessToken },
+            select: { id: true },
+          },
+        },
+      },
+    },
   });
-  // const flowerPreviews: Array<any> = [];
 
   return (
     <main>
