@@ -1,14 +1,8 @@
-"use client";
 import Image from "next/image";
 import LikeButton from "../likeButton";
 import Link from "next/link";
 export default function Flower(Info: FlowerInfo) {
   const onSale = Number(Info.salePrice) < 0.5;
-  // * We are able to get if we are liked from preview.flowers.users
-  // * Problem is nav
-  // if (Info.users) {
-  //   console.log(Info.users[0].id);
-  // }
   return (
     <div className="text-center">
       <Link href={`/flower/${Info.id}`}>
@@ -49,7 +43,7 @@ export default function Flower(Info: FlowerInfo) {
           </div>
         </Link>
 
-        <LikeButton id={Info.id} user={Info.users!} />
+        <LikeButton id={Info.id} user={Info.users} />
       </div>
     </div>
   );

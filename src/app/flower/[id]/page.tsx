@@ -1,11 +1,23 @@
 import { prisma } from "@/app/db";
 import { redirect } from "next/navigation";
 import Image from "next/image";
+import ShoppingButton from "@/components/shoppingButton";
+
+import { getServerSession } from "next-auth";
+import { options } from "@/app/api/auth/[...nextauth]/options";
 
 export default async function Page(props: any) {
+  const data = await getServerSession(options);
+  console.log(data, "data");
   const Info = await prisma.flower.findFirst({
     where: { id: props.params.id },
-    include: { tags: true },
+    include: {
+      tags: true,
+      shoppingList: {
+        where: { id: data?.accessToken },
+        select: { id: true },
+      },
+    },
   });
   if (!Info) {
     return redirect("/404");
@@ -29,10 +41,7 @@ export default async function Page(props: any) {
         <h2 className="text-2xl">{Info.price}</h2>
         <p>{Info.description}</p>
         <div className="mt-auto">
-          <button className="bg-black text-white font-jua text-3xl p-2 rounded-2xl w-full">
-            Add to shopping cart
-          </button>
-
+          <ShoppingButton id={Info.id} user={Info.shoppingList} />
           <div className="flex gap-2 my-2">
             {Info.tags.map((v) => {
               return <p className="bg-gray-300 p-2 rounded-xl ">{v.tag}</p>;

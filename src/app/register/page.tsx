@@ -62,11 +62,12 @@ export default function Register() {
       );
       if (res.ok) {
         await signIn("credentials", {
-          redirect: true,
-          callbackUrl: "/",
+          redirect: false,
           email: formData.email,
           password: formData.password,
         });
+        route.back();
+        route.back();
       } else {
         setErrorValue("You have an account, please login");
         setInvalidEmail(true);

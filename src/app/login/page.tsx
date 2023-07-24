@@ -48,7 +48,9 @@ export default function Login() {
         setInvalidEmail(true);
         setInvalidPassword(true);
       } else {
-        route.push("/");
+        //Back to were you came from
+        route.back();
+        // route.push("/");
       }
     }
   };
