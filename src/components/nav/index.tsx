@@ -9,17 +9,41 @@ import Cart from "./cart";
 
 export default async function Nav() {
   const data = await getServerSession(options);
-  const user = await prisma.user.findFirst({
-    where: {
-      id: data?.accessToken,
-    },
-    select: {
-      _count: {
-        select: { flowersLiked: true, shoppingList: true },
-      },
-    },
-  });
+  const user = data
+    ? await prisma.user.findFirst({
+        where: {
+          id: data?.accessToken,
+        },
+        include: {
+          flowersLiked: {
+            include: {
+              users: {
+                where: { id: data?.accessToken },
+                select: { id: true },
+              },
+              shoppingList: {
+                where: { id: data?.accessToken },
+                select: { id: true },
+              },
+            },
+          },
+          shoppingList: {
+            include: {
+              users: {
+                where: { id: data?.accessToken },
+                select: { id: true },
+              },
+              shoppingList: {
+                where: { id: data?.accessToken },
+                select: { id: true },
+              },
+            },
+          },
+        },
+      })
+    : { shoppingList: [], flowersLiked: [] };
 
+  console.log(user?.shoppingList);
   return (
     <nav className="flex gap-5 p-2">
       {/* We want this in one <a> tag for tabbing between links*/}
@@ -37,8 +61,8 @@ export default async function Nav() {
       </a>
 
       <User loggedIn={data != null} />
-      <Heart initLikes={user?._count.flowersLiked!} />
-      <Cart initCartItems={user?._count.shoppingList!} />
+      <Heart initLikes={user?.flowersLiked!} />
+      <Cart initCartItems={user?.shoppingList!} />
       <div className="mr-1"></div>
     </nav>
   );

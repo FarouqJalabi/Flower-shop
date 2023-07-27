@@ -3,41 +3,41 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
-export default function ShoppingButton({
-  id,
-  user,
-}: {
-  id: string;
-  user: Array<{ id: string }>;
-}) {
+interface props {
+  flower: FlowerInfo;
+  user?: Array<{ id: string }>;
+  small?: boolean;
+}
+export default function ShoppingButton({ flower, user, small = false }: props) {
   const router = useRouter();
-  const { status } = useSession();
-  const [inCart, setInCart] = useState(user.length == 0);
+  const [inCart, setInCart] = useState(user ? user.length != 0 : false);
 
-  const removeCart = new Event("customEvent_removeCart");
-  const addCart = new Event("customEvent_addCart");
-
+  const updateCart = new CustomEvent("customEvent_updateCart", {
+    detail: { flower: flower },
+  });
   return (
     <button
-      className="bg-black text-white font-jua text-3xl p-2 rounded-2xl w-full"
+      className={`bg-black text-white font-jua ${
+        small ? "text-sm" : "text-3xl"
+      } p-2 rounded-2xl w-full`}
       onClick={() => {
-        if (status === "authenticated") {
+        if (user) {
           setInCart(!inCart);
           fetch("/api/shoppingList", {
             method: "POST",
             body: JSON.stringify({
-              addToList: inCart,
-              flowerId: id,
+              addToList: !inCart,
+              flowerId: flower.id,
             }),
           });
 
-          dispatchEvent(inCart ? addCart : removeCart);
+          dispatchEvent(updateCart);
         } else {
           router.push("/login");
         }
       }}
     >
-      {inCart ? "Add to " : "Remove from "}shopping cart
+      {inCart ? "Remove from " : "Add to "}shopping cart
     </button>
   );
 }

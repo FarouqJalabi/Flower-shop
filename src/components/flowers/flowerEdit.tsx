@@ -46,8 +46,8 @@ export default function FlowerEdit({ tags }: props) {
       <div className="flex flex-col">
         {tags.map((v: string) => {
           return (
-            <div>
-              <input type="checkbox" name={`tag${v}`} key={v} id={v} />
+            <div key={v}>
+              <input type="checkbox" name={`tag${v}`} id={v} />
               <label htmlFor={v}>{v}</label>
             </div>
           );

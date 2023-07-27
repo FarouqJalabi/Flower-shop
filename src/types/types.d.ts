@@ -8,6 +8,9 @@ declare global {
   export interface user {
     id: string;
   }
+  export interface tag {
+    tag: string;
+  }
   export interface FlowerInfo {
     id: string;
     title: string;
@@ -18,7 +21,7 @@ declare global {
     salePrice?: number | null;
     flowersLiked?: Array<user>;
     shoppingList?: Array<user>;
-    tags?: Array<string>;
+    tags?: Array<tag>;
     users?: Array<{ id: string }>;
   }
 }

@@ -4,26 +4,26 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 interface props {
-  id: string;
+  flower: FlowerInfo;
   user?: Array<{ id: string }>;
   big?: boolean;
 }
 
-export default function LikeButton({ id, user, big = false }: props) {
+export default function LikeButton({ flower, user, big = false }: props) {
   // Getting user id
   const router = useRouter();
-  // const { status } = useSession();
   const [liked, setLiked] = useState(user ? user.length != 0 : false);
 
-  const removeHeart = new Event("customEvent_removeHeart");
-  const addHeart = new Event("customEvent_addHeart");
+  const updateHeart = new CustomEvent("customEvent_updateHeart", {
+    detail: { flower: flower },
+  });
 
   const likeFlower = async (liked: boolean) => {
     await fetch("/api/flowerLiked", {
       method: "POST",
       body: JSON.stringify({
         flowerLiked: liked,
-        flowerId: id,
+        flowerId: flower.id,
       }),
     });
   };
@@ -37,7 +37,7 @@ export default function LikeButton({ id, user, big = false }: props) {
         if (user) {
           likeFlower(!liked);
           setLiked(!liked);
-          dispatchEvent(!liked ? addHeart : removeHeart);
+          dispatchEvent(updateHeart);
         } else {
           router.push("/login");
         }
