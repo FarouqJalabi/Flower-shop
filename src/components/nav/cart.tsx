@@ -2,8 +2,9 @@
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import MiniFlower from "../miniFlower";
+import Link from "next/link";
 interface props {
-  initCartItems: Array<FlowerInfo>;
+  initCartItems: number;
 }
 export default function Cart({ initCartItems }: props) {
   //Maybe get server session
@@ -11,17 +12,7 @@ export default function Cart({ initCartItems }: props) {
   const [listHidden, setListHidden] = useState(true);
 
   const updateCart = (e: CustomEventInit) => {
-    const in_likes = cartItems.reduce((v, flower) => {
-      return flower.id === e.detail.flower.id || v;
-    }, false);
-
-    if (in_likes) {
-      let liked_copy = [...cartItems];
-      liked_copy = liked_copy.filter((f) => f.id !== e.detail.flower.id);
-      setCartItems(liked_copy);
-    } else {
-      setCartItems((prev_items) => [...prev_items, e.detail.flower]);
-    }
+    setCartItems(cartItems + e.detail.v);
   };
   useEffect(() => {
     window.addEventListener("customEvent_updateCart", updateCart);
@@ -32,35 +23,19 @@ export default function Cart({ initCartItems }: props) {
   }, [cartItems, updateCart]);
 
   return (
-    <button
-      className="relative my-auto"
-      onClick={() => {
-        setListHidden(!listHidden);
-      }}
-      onBlur={(e) => {
-        setListHidden(true);
-      }}
+    <Link
+      className="relative my-auto w-10 sm:w-12 aspect-square mr-2"
+      href={"/cart"}
     >
-      <div className="relative my-auto w-10 sm:w-12 aspect-square mr-2">
-        <div className="rounded-full bg-red-500 w-6 h-6 absolute z-10 ml-7 sm:ml-9 -mt-3 sm:-mt-2 flex items-center justify-center text-white">
-          {cartItems.length}
-        </div>
-        <Image
-          src={"/cart.svg"}
-          alt={"Heart, your liked flowers"}
-          fill
-          style={{ objectFit: "contain" }}
-        />
+      <div className="rounded-full bg-red-500 w-6 h-6 absolute z-10 right-[-10px] top-[-10px] flex items-center justify-center text-white">
+        {cartItems}
       </div>
-      <div
-        className={`w-96 h-48 overflow-y-auto bg-red-500 absolute right-0 shadow-2xl ${
-          listHidden ? "hidden" : ""
-        }`}
-      >
-        {cartItems.map((f) => (
-          <MiniFlower Info={f} key={f.id} />
-        ))}
-      </div>
-    </button>
+      <Image
+        src={"/cart.svg"}
+        alt={"Heart, your liked flowers"}
+        fill
+        style={{ objectFit: "contain" }}
+      />
+    </Link>
   );
 }

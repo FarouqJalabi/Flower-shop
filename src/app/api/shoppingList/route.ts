@@ -7,10 +7,8 @@ export async function POST(req: NextRequest) {
   const body = await req.json();
 
   const { flowerId, addToList } = body;
-  console.log("Flower Id: ", flowerId);
-  console.log("Add to list?: ", addToList);
 
-  if (token ) {
+  if (token) {
     const tokenValues = JSON.stringify(token, null, 2);
     const userId = JSON.parse(tokenValues).accessToken;
 

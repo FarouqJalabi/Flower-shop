@@ -14,8 +14,11 @@ export default function LikeButton({ flower, user, big = false }: props) {
   const router = useRouter();
   const [liked, setLiked] = useState(user ? user.length != 0 : false);
 
-  const updateHeart = new CustomEvent("customEvent_updateHeart", {
-    detail: { flower: flower },
+  const addHeart = new CustomEvent("customEvent_updateHeart", {
+    detail: { v: 1 },
+  });
+  const removeHeart = new CustomEvent("customEvent_updateHeart", {
+    detail: { v: -1 },
   });
 
   const likeFlower = async (liked: boolean) => {
@@ -37,7 +40,7 @@ export default function LikeButton({ flower, user, big = false }: props) {
         if (user) {
           likeFlower(!liked);
           setLiked(!liked);
-          dispatchEvent(updateHeart);
+          dispatchEvent(!liked ? addHeart : removeHeart);
         } else {
           router.push("/login");
         }

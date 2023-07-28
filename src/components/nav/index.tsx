@@ -14,36 +14,13 @@ export default async function Nav() {
         where: {
           id: data?.accessToken,
         },
-        include: {
-          flowersLiked: {
-            include: {
-              users: {
-                where: { id: data?.accessToken },
-                select: { id: true },
-              },
-              shoppingList: {
-                where: { id: data?.accessToken },
-                select: { id: true },
-              },
-            },
-          },
-          shoppingList: {
-            include: {
-              users: {
-                where: { id: data?.accessToken },
-                select: { id: true },
-              },
-              shoppingList: {
-                where: { id: data?.accessToken },
-                select: { id: true },
-              },
-            },
+        select: {
+          _count: {
+            select: { flowersLiked: true, shoppingList: true },
           },
         },
       })
-    : { shoppingList: [], flowersLiked: [] };
-
-  console.log(user?.shoppingList);
+    : { _count: { shoppingList: 0, flowersLiked: 0 } };
   return (
     <nav className="flex gap-5 p-2">
       {/* We want this in one <a> tag for tabbing between links*/}
@@ -61,8 +38,8 @@ export default async function Nav() {
       </a>
 
       <User loggedIn={data != null} />
-      <Heart initLikes={user?.flowersLiked!} />
-      <Cart initCartItems={user?.shoppingList!} />
+      <Heart initLikes={user?._count.flowersLiked!} />
+      <Cart initCartItems={user?._count.shoppingList!} />
       <div className="mr-1"></div>
     </nav>
   );
