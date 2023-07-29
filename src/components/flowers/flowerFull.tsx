@@ -1,8 +1,10 @@
 import Image from "next/image";
 import LikeButton from "../likeButton";
 import Link from "next/link";
+import ShoppingButton from "../shoppingButton";
 
-export default function Flower(Info: FlowerInfo) {
+//Just like flower expect it has shop button too
+export default function FlowerFull(Info: FlowerInfo) {
   const onSale = Number(Info.salePrice) < 0.5;
   return (
     <div className="text-center max-w-min">
@@ -46,6 +48,8 @@ export default function Flower(Info: FlowerInfo) {
 
         <LikeButton flower={Info} user={Info.users} />
       </div>
+
+      <ShoppingButton flower={Info} user={Info.shoppingList} small={true} />
     </div>
   );
 }

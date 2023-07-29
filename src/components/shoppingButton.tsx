@@ -22,7 +22,7 @@ export default function ShoppingButton({ flower, user, small = false }: props) {
   return (
     <button
       className={`bg-black text-white font-jua ${
-        small ? "text-sm" : "text-3xl"
+        small ? "text-lg " : "text-3xl "
       } p-2 rounded-2xl w-full`}
       onClick={() => {
         if (user) {

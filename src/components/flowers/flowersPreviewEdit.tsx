@@ -79,6 +79,8 @@ export default function FlowersPreviewEdit({ tags }: props) {
         setLoadingStatus(
           "The main form has an empty image input. Please fill it our or set color to none"
         );
+
+        return true;
       }
       if (v == "") {
         setLoadingStatus(
@@ -93,8 +95,8 @@ export default function FlowersPreviewEdit({ tags }: props) {
     }
 
     setLoadingStatus("Posting form data...");
-
     return;
+
     await fetch("api/post", {
       method: "POST",
       body: JSON.stringify({

@@ -36,7 +36,6 @@ export default function LikeButton({ flower, user, big = false }: props) {
         big ? "w-16" : "w-10"
       } aspect-square z-10`}
       onClick={() => {
-        // if (status === "authenticated") {
         if (user) {
           likeFlower(!liked);
           setLiked(!liked);

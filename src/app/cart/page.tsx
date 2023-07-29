@@ -1,10 +1,9 @@
-import FlowersPreview from "@/components/flowers/flowersPreview";
 import { getServerSession } from "next-auth";
 import { options } from "@/app/api/auth/[...nextauth]/options";
 import { prisma } from "../db";
-import Flower from "@/components/flowers/flower";
 import { redirect } from "next/navigation";
 import Link from "next/link";
+import FlowerFull from "@/components/flowers/flowerFull";
 
 export default async function CartItems() {
   const data = await getServerSession(options);
@@ -22,15 +21,19 @@ export default async function CartItems() {
             where: { id: data?.accessToken },
             select: { id: true },
           },
+          shoppingList: {
+            where: { id: data?.accessToken },
+            select: { id: true },
+          },
         },
       },
     },
   });
 
   return (
-    <main className="flex flex-wrap gap-2 m-2">
+    <main className="flex flex-wrap gap-2 p-2 max-w-2xl mx-auto justify-center">
       {user?.shoppingList.map((f) => {
-        return <Flower {...f} key={f.id} />;
+        return <FlowerFull {...f} key={f.id} />;
       })}
       <div
         className={`${

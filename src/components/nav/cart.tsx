@@ -1,16 +1,13 @@
 "use client";
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import MiniFlower from "../miniFlower";
 import Link from "next/link";
 interface props {
   initCartItems: number;
 }
-export default function Cart({ initCartItems }: props) {
+export default function Cart({ initCartItems = 0 }: props) {
   //Maybe get server session
   const [cartItems, setCartItems] = useState(initCartItems);
-  const [listHidden, setListHidden] = useState(true);
-
   const updateCart = (e: CustomEventInit) => {
     setCartItems(cartItems + e.detail.v);
   };
