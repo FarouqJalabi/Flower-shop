@@ -1,7 +1,6 @@
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
-
 }
 
 generator client {
@@ -47,7 +46,7 @@ model FlowerPreviews {
 
 model Flower {
   id          String @id @default(cuid())
-  title       String
+  title       String @unique
   description String
 
   price     Float

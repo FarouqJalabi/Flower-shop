@@ -1,24 +1,53 @@
 "use client";
 import { FormEvent, useState } from "react";
 import Image from "next/image";
+import FlowerEdit from "./flowers/flowerEdit";
 interface props {
   tags: Array<string>;
+  flowers: Array<{ title: string; id: string }>;
 }
-export default function TagEdit({ tags }: props) {
+let example_info: FlowerInfo = {
+  id: "11",
+  title: "Anemone",
+  alt: "The white flower Anemone",
+  price: 49.99,
+  description: "Description",
+};
+
+export default function FlowersEdit({ tags, flowers }: props) {
   const [loadingStatus, setLoadingStatus] = useState("");
+  //!Bad don't use any
+  const apiHandler = async (flower: any, remove = false) => {
+    console.log("Updating flowers");
+    const res = await fetch("api/flower", {
+      method: "POST",
+      body: JSON.stringify({
+        flower: flower,
+        remove: remove,
+      }),
+    })
+      .then(async (res) => {
+        if (!res.ok) {
+          console.log("Resoponse is not ok", res);
+        }
+        const body = await res.json();
+        console.log(body, "Res body");
+      })
+      .catch((error) => {
+        console.log("Catched typeError error!", error);
+      });
+    console.log(res, "Whole res");
+  };
   const createTag = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     let formObject = new FormData(e.currentTarget as HTMLFormElement);
     let formData = Object.fromEntries(formObject);
-    if (formData.tag.toString() == "") {
-      setLoadingStatus("Can't post empty tag");
-      return;
-    }
+
     setLoadingStatus("Posting tags");
     const res = await fetch("api/postTag", {
       method: "POST",
       body: JSON.stringify({
-        tag: formData.tag.toString().toLowerCase(),
+        tag: formData.tag.toString(),
       }),
     });
     if (res.ok) {
@@ -31,47 +60,25 @@ export default function TagEdit({ tags }: props) {
 
   return (
     <div className="flex gap-2 m-2 items-center">
-      <form className="flex flex-col w-min gap-2" onSubmit={createTag}>
-        <h1 className="text-3xl font-jua">Create new tag</h1>
-        <input
-          type="text"
-          name="tag"
-          placeholder="tag"
-          className="text-lg border-2 border-black p-2"
-          onChange={() => setLoadingStatus("")}
-        />
+      <div>
+        <h1 className="text-3xl font-jua">Create new flower</h1>
+        <FlowerEdit tags={tags} />
         <button
           type="submit"
-          className="bg-black text-white text-xl rounded-lg p-2"
+          className="bg-black text-white text-xl rounded-lg p-2 w-full"
         >
           Create
         </button>
-        <p>{loadingStatus} </p>
-      </form>
+      </div>
       <div className="bg-gray-400 w-1 h-28 rounded-full mt-8 mx-5"></div>
       <div className="grid grid-rows-2 grid-flow-col gap-2 pt-6 items-center ">
-        {tags.map((tag) => {
+        {flowers.map((flower) => {
           return (
-            <div key={tag} className="flex gap-2 h-10 items-center">
+            <div key={flower.id} className="flex gap-2 h-10 items-center">
               <button
                 className="relative bg-red-500 w-10 h-10 rounded-full"
-                onClick={async () => {
-                  setLoadingStatus("Deleting tag...");
-                  const res = await fetch("api/postTag", {
-                    method: "POST",
-                    body: JSON.stringify({
-                      tag: tag,
-                      deleteTag: true,
-                    }),
-                  });
-                  if (res.ok) {
-                    setLoadingStatus("All done");
-                    window.location.reload();
-                  } else {
-                    setLoadingStatus(
-                      "Something went wrong. Refresh and try again"
-                    );
-                  }
+                onClick={() => {
+                  apiHandler(flower, true);
                 }}
               >
                 <Image
@@ -82,7 +89,7 @@ export default function TagEdit({ tags }: props) {
                   className="p-2"
                 />
               </button>
-              <p className="text-lg">{tag}</p>
+              <p className="text-lg">{flower.title}</p>
             </div>
           );
         })}

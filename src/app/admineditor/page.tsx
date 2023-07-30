@@ -1,19 +1,20 @@
 import FlowersPreviewEdit from "@/components/flowers/flowersPreviewEdit";
 import { prisma } from "../db";
 import TagEdit from "@/components/tagEdit";
-import type { InferGetStaticPropsType, GetStaticProps } from "next";
+import FlowersEdit from "@/components/flowersEdit";
 
 export default async function AdminEditor() {
-  //   const flowerPreviews = await prisma.flowerPreviews.findMany();
-  // const flowerPreviews: Array<any> = [];
-
   const tagsObjects = await prisma.tags.findMany({ select: { tag: true } });
   const tagsList = tagsObjects.map((v) => v.tag);
 
+  const flowers = await prisma.flower.findMany({
+    select: { title: true, id: true },
+  });
   return (
     <main>
       <FlowersPreviewEdit tags={tagsList} />
-      <TagEdit />
+      <TagEdit tags={tagsList} />
+      <FlowersEdit tags={tagsList} flowers={flowers} />
     </main>
   );
 }
