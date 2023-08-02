@@ -39,7 +39,8 @@ export default async function Home() {
         }`}
       >
         <p>
-          It appears you don't have any flowers liked. If you do try to refresh!
+          It appears you don&apos;t have any flowers liked. If you do try to
+          refresh!
         </p>
 
         <Link href="/" className="underline text-blue-500 ml-auto my-auto ">

@@ -43,7 +43,7 @@ export default async function CartItems() {
         }`}
       >
         <p>
-          It appears you don't have any flowers in you&apos;re cart. If you do
+          It appears you don&apos;t have any flowers in you&apos;re cart. If you do
           try to refresh!
         </p>
 
