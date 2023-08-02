@@ -18,7 +18,21 @@ export default function ShoppingButton({ flower, user, small = false }: props) {
   const removeCart = new CustomEvent("customEvent_updateCart", {
     detail: { v: -1 },
   });
+  const addToCart = async (add: boolean) => {
+    const res = await fetch(`/api/flower/${flower.id}`, {
+      method: "PATCH",
+      body: JSON.stringify({
+        addToList: add,
+        listType: "shoppingList",
+      }),
+    });
 
+    if (!res.ok) {
+      console.log(res.statusText);
+    }
+
+    console.log(res.statusText);
+  };
   return (
     <button
       className={`bg-black text-white font-jua ${
@@ -27,13 +41,8 @@ export default function ShoppingButton({ flower, user, small = false }: props) {
       onClick={() => {
         if (user) {
           setInCart(!inCart);
-          fetch("/api/shoppingList", {
-            method: "POST",
-            body: JSON.stringify({
-              addToList: !inCart,
-              flowerId: flower.id,
-            }),
-          });
+
+          addToCart(!inCart);
 
           dispatchEvent(!inCart ? addCart : removeCart);
         } else {

@@ -1,9 +1,10 @@
 import { withAuth } from "next-auth/middleware";
+import { NextRequest } from "next/server";
 
 export default withAuth(
 	
   // `withAuth` augments your `Request` with the user's token.
-  function middleware(req) {
+  function middleware(req:NextRequest) {
     // console.log(req.nextauth.token, "Request in middleware");
   },
   {

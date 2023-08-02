@@ -6,11 +6,30 @@ import ShoppingButton from "@/components/shoppingButton";
 import { getServerSession } from "next-auth";
 import { options } from "@/app/api/auth/[...nextauth]/options";
 import LikeButton from "@/components/likeButton";
+import { Metadata } from "next";
 
-export default async function Page(props: any) {
+type props = {
+  params: { id: string };
+};
+export async function generateMetadata({ params }: props): Promise<Metadata> {
+  // const id = params.id
+  return {
+    title: "Flower Shop",
+    description: "Mock flower shop",
+    openGraph: {
+      images: [
+        "https://eljnfbtxmeteozramfkt.supabase.co/storage/v1/object/public/flower_images/" +
+          params.id +
+          ".jpg",
+      ],
+    },
+  };
+}
+
+export default async function Page({ params }: props) {
   const data = await getServerSession(options);
   const Info: FlowerInfo | null = await prisma.flower.findFirst({
-    where: { id: props.params.id },
+    where: { id: params.id },
     include: {
       tags: true,
       shoppingList: data

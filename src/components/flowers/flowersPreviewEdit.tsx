@@ -63,7 +63,7 @@ export default function FlowersPreviewEdit({ tags }: props) {
           );
           return true;
         }
-        if (v == "" && i == 4) {
+        if (v == "" && i != 5) {
           setLoadingStatus(
             `The ${
               f_i + 1
@@ -96,33 +96,35 @@ export default function FlowersPreviewEdit({ tags }: props) {
 
     setLoadingStatus("Posting form data...");
 
-    await fetch("api/post", {
+    const res = await fetch("api/post", {
       method: "POST",
       body: JSON.stringify({
         formData: formData,
         flowersData: flowersData,
       }),
-    })
-      .then((response) => response.json())
-      .then(async (res) => {
-        setLoadingStatus("Posting images...");
-        await res.flowersId.forEach(async (id: string, i: number) => {
-          const { data, error } = await supabase.storage
-            .from("flower_images")
-            .upload(id + ".jpg", flowersData[i].img, {
-              upsert: false,
-            });
-        });
-        if (formData.color != "NONE") {
-          const { data, error } = await supabase.storage
-            .from("preview_images")
-            .upload(res.previewId + ".jpg", formData.img, {
-              upsert: false,
-            });
-        }
-      });
+    });
+    if (res.ok) {
+      setLoadingStatus("Posting images...");
 
-    setLoadingStatus("Done! Check out the main page for changes");
+      const res_data = await res.json();
+      await res_data.flowersId.forEach(async (id: string, i: number) => {
+        const { data, error } = await supabase.storage
+          .from("flower_images")
+          .upload(id + ".jpg", flowersData[i].img, {
+            upsert: false,
+          });
+      });
+      if (formData.color != "NONE") {
+        const { data, error } = await supabase.storage
+          .from("preview_images")
+          .upload(res_data.previewId + ".jpg", formData.img, {
+            upsert: false,
+          });
+      }
+      setLoadingStatus("Done! Check out the main page for changes");
+    } else {
+      setLoadingStatus(res.statusText);
+    }
   };
   return (
     <>
