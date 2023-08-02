@@ -17,10 +17,15 @@ export async function generateMetadata({ params }: props): Promise<Metadata> {
     title: "Flower Shop",
     description: "Mock flower shop",
     openGraph: {
+      title: "Flower shop: Flower",
       images: [
-        "https://eljnfbtxmeteozramfkt.supabase.co/storage/v1/object/public/flower_images/" +
-          params.id +
-          ".jpg",
+        {
+          url:
+            "https://eljnfbtxmeteozramfkt.supabase.co/storage/v1/object/public/flower_images/" +
+            params.id +
+            ".jpg",
+          alt: "Flower image",
+        },
       ],
     },
   };
