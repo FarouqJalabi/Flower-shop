@@ -7,7 +7,7 @@ export default function Flower(Info: FlowerInfo) {
   return (
     <div className="text-center max-w-min">
       <Link href={`/flower/${Info.id}`}>
-        <div className="relative w-52 sm:w-72 sm:h-40 bg-gray-300 overflow-hidden rounded-xl">
+        <div className="relative w-52 h-28 sm:w-72 sm:h-40 bg-gray-300 overflow-hidden rounded-xl">
           <Image
             src={
               "https://eljnfbtxmeteozramfkt.supabase.co/storage/v1/object/public/flower_images/" +

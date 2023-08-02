@@ -11,6 +11,9 @@ import { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Flower Shop",
   description: "Mock flower shop",
+  other: {
+    "google-site-verification": "ZVGdHmoplW_pBTM-dYjSBsi42jYQ1pnj6pWFqJLlInI",
+  },
 };
 
 const inter = Inter({ subsets: ["latin"] });
