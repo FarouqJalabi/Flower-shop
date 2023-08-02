@@ -22,11 +22,11 @@ export const metadata: Metadata = {
 
     images: [
       {
-        url:
-          "https://eljnfbtxmeteozramfkt.supabase.co/storage/v1/object/public/flower_images/" +
-          // params.id +
-          "clksqth2f00019us4xrma6cbg" +
-          ".jpg",
+        url: "https://eljnfbtxmeteozramfkt.supabase.co/storage/v1/object/public/flower_images/clksqth2f00019us4xrma6cbg.jpg",
+        // "https://eljnfbtxmeteozramfkt.supabase.co/storage/v1/object/public/flower_images/" +
+        // params.id +
+        // "clksqth2f00019us4xrma6cbg" +
+        // ".jpg",
         alt: "Flower image",
         width: 800,
         height: 600,
