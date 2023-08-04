@@ -169,7 +169,7 @@ export default function FlowersPreviewEdit({ tags }: props) {
                 name="img"
                 accept="image/*"
                 id="fileMain"
-                className="text-xl p-2 top-0 bottom-0 my-auto z-10 hidden"
+                className="text-xl p-2 top-0 bottom-0 my-auto z-10 hidden object-cover"
                 onChange={(e) => {
                   let target = e.target;
                   let files = target.files;

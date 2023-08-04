@@ -92,7 +92,7 @@ export default function FlowerEdit({
           type="file"
           name="img"
           accept="image/*"
-          className="text-xl p-2 top-0 bottom-0 my-auto z-10 hidden"
+          className="text-xl p-2 top-0 bottom-0 my-auto z-10 hidden object-cover"
           id={"inputFile" + flowerKey}
           onChange={(e) => {
             let target = e.target;
