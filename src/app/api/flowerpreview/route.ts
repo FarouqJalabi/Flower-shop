@@ -63,3 +63,43 @@ export async function POST(req: NextRequest) {
     );
   }
 }
+
+export async function DELETE(req: NextRequest) {
+  const token = await getToken({ req });
+  const previewId = req.nextUrl.searchParams.get("id");
+  console.log(req.url, "DELETE req");
+
+  if (!token) {
+    return NextResponse.json({}, { status: 401 });
+  }
+
+  const tokenValues = JSON.stringify(token, null, 2);
+  const userEmail = JSON.parse(tokenValues)?.user?.email;
+
+  if (userEmail !== "admin@hotmail.com") {
+    return NextResponse.json({}, { status: 403 });
+  }
+
+  if (!previewId) {
+    return NextResponse.json({}, { status: 400, statusText: "Missing data" });
+  }
+
+  try {
+    const flowerPreview_res = await prisma.flowerPreviews.delete({
+      where: { id: previewId },
+    });
+
+    return NextResponse.json(
+      { ...flowerPreview_res },
+      { status: 200, statusText: "Deleted succefully" }
+    );
+  } catch (error) {
+    return NextResponse.json(
+      { error: error },
+      {
+        status: 500,
+        statusText: "Failed to delete flowerPreview",
+      }
+    );
+  }
+}

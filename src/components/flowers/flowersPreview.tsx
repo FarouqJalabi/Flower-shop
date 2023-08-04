@@ -73,7 +73,6 @@ export default function FlowersPreview({
           className={`flex gap-8 pt-3 overflow-x-scroll relative bg-${color}-300 scrollbar-none`}
         >
           <div className="ml-12"></div>
-          {/* <Flower info={example_info} />, we want the value not variable */}
           {collectionId.map((v) => {
             return <Flower {...v} key={v.id} />;
           })}

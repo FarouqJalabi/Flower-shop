@@ -94,9 +94,9 @@ export default async function Page({ params }: props) {
           ".jpg"
         }
         alt={Info.alt}
+        className="flex-1 max-sm:w-full object-cover"
         width={288}
         height={160}
-        className="flex-1 max-sm:w-full object-cover"
         sizes="(max-width: 640px) 100vw, 40vw"
         priority
       />

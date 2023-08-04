@@ -1,5 +1,5 @@
 "use client";
-import { FormEvent, useState } from "react";
+import { useState } from "react";
 import Image from "next/image";
 import FlowerEdit from "./flowers/flowerEdit";
 interface props {
@@ -29,8 +29,8 @@ export default function FlowersEdit({ tags, flowers }: props) {
     <div className="flex gap-2 m-2 items-center">
       <div>
         <h1 className="text-3xl font-jua">Create new flower</h1>
-        <FlowerEdit tags={tags} standAlone={true}/>
-        
+        <FlowerEdit tags={tags} standAlone={true} />
+
         <p>{loadingStatus}</p>
       </div>
       <div className="bg-gray-400 w-1 h-28 rounded-full mt-8 mx-5"></div>
@@ -48,8 +48,7 @@ export default function FlowersEdit({ tags, flowers }: props) {
                   src={"/trash.svg"}
                   alt={"A trash icon"}
                   fill
-                  style={{ objectFit: "contain" }}
-                  className="p-2"
+                  className="p-2 object-cover"
                 />
               </button>
               <p className="text-lg">{flower.title}</p>

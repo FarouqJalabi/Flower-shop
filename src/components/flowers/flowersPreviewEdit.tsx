@@ -8,8 +8,9 @@ interface props {
 }
 
 export default function FlowersPreviewEdit({ tags }: props) {
-  let [flowersCount, setFlowerCount] = useState(1);
-  let [loadingStatus, setLoadingStatus] = useState("");
+  const [flowersCount, setFlowerCount] = useState([0]);
+  const [loadingStatus, setLoadingStatus] = useState("");
+  const [imgPreview, setImgPreview] = useState("");
 
   let flowerRef = createRef<HTMLDivElement>();
   const supabase = createClient(
@@ -17,6 +18,16 @@ export default function FlowersPreviewEdit({ tags }: props) {
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY as string
   );
 
+  const removeFlower = (flowerKey: number) => {
+    const indexFlower = flowersCount.indexOf(flowerKey);
+    const copyCount = [...flowersCount];
+    if (indexFlower > -1) {
+      // only splice array when item is found
+      copyCount.splice(indexFlower, 1); // 2nd parameter means remove one item only
+    }
+
+    setFlowerCount(copyCount);
+  };
   const handle_form = async (e: FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault();
     let formObject = new FormData(e.currentTarget as HTMLFormElement);
@@ -96,7 +107,7 @@ export default function FlowersPreviewEdit({ tags }: props) {
 
     setLoadingStatus("Posting form data...");
 
-    const res = await fetch("api/post", {
+    const res = await fetch("api/flowerpreview", {
       method: "POST",
       body: JSON.stringify({
         formData: formData,
@@ -126,96 +137,145 @@ export default function FlowersPreviewEdit({ tags }: props) {
       setLoadingStatus(res.statusText);
     }
   };
+
   return (
-    <>
-      <h1 className="font-jua text-3xl">Create a new Flower Preview</h1>
-      <div className="flex flex-wrap gap-4 m-4" ref={flowerRef}>
-        <form onSubmit={handle_form} className="flex">
-          <div className="flex flex-col gap-3 text-center">
+    <div ref={flowerRef}>
+      <form
+        onSubmit={handle_form}
+        id="mainForm"
+        className="flex flex-col gap-2 "
+      >
+        <h1 className="font-jua text-3xl">Create a new Flower Preview</h1>
+        <div className="flex gap-10 mx-2">
+          <div className="flex flex-col gap-2 ">
             <input
               type="text"
               name="title"
               placeholder="Title"
-              className="text-2xl font-extrabold border-2 border-black p-2"
+              className="bg-gray-200 focus:border-none focus:outline-none p-2 rounded-md text-2xl font-extrabold w-3/4"
             />
             <input
               type="text"
               name="underTitle"
-              placeholder="underTitle"
-              className="text-lg border-2 border-black p-2"
+              placeholder="underTitle/description"
+              className="bg-gray-200 focus:border-none focus:outline-none p-2 rounded-md text-xl w-full "
             />
-
-            <input
-              type="file"
-              name="img"
-              className="text-lg border-2 border-black p-2"
-            />
-
-            <input
-              type="text"
-              name="alt"
-              placeholder="alt"
-              className="text-lg border-2 border-black p-2"
-            />
-
-            <div className="flex gap-2">
-              <label htmlFor="color" className="text-lg my-auto">
-                color:
-              </label>
-              <select
-                name="color"
-                id="color"
-                placeholder="none"
-                className="text-lg border-2 border-black p-2 w-full"
-              >
-                <option value="NONE">none</option>
-                <option value="ORANGE">orange</option>
-                <option value="RED">red</option>
-                <option value="GREEN">green</option>
-                <option value="BLUE">blue</option>
-                <option value="PURPLE">purple</option>
-                <option value="PINK">pink</option>
-              </select>
-            </div>
-            <button
-              type="submit"
-              className="bg-black text-white text-xl rounded-lg p-2"
-            >
-              Post
-            </button>
-            <button
-              type="submit"
-              className="bg-black text-white text-xl rounded-lg p-2"
-              onClick={async () => {
-                await fetch("api/post", {
-                  method: "POST",
-                  body: JSON.stringify({}),
-                });
-              }}
-            >
-              Revalidate page
-            </button>
-            <p className="max-w-[380px]">{loadingStatus}</p>
           </div>
-        </form>
-        {Array.from(Array(flowersCount)).map((v) => {
-          return <FlowerEdit key={"2"} tags={tags} />;
-        })}
-        <div className="flex gap-2">
-          <button
-            className="bg-black text-white text-3xl font-extrabold rounded-full p-2 my-auto aspect-square w-14 "
-            onClick={() => setFlowerCount(flowersCount + 1)}
-          >
-            +
-          </button>
-          <button
-            className="bg-black text-white text-3xl font-extrabold rounded-full p-2 my-auto aspect-square w-14 "
-            onClick={() => setFlowerCount(flowersCount - 1)}
-          >
-            -
-          </button>
+
+          <div className="flex gap-2">
+            <div className="relative w-52 h-28 bg-gray-200 overflow-hidden flex justify-center items-center">
+              <input
+                type="file"
+                name="img"
+                accept="image/*"
+                id="fileMain"
+                className="text-xl p-2 top-0 bottom-0 my-auto z-10 hidden"
+                onChange={(e) => {
+                  let target = e.target;
+                  let files = target.files;
+                  if (FileReader && files && files.length) {
+                    var fr = new FileReader();
+                    fr.onload = () => {
+                      setImgPreview(fr.result as string);
+                    };
+                    fr.readAsDataURL(files[0]);
+                  } else {
+                    setImgPreview("");
+                  }
+                }}
+              />
+              <label
+                htmlFor="fileMain"
+                className="bg-gray-200 h-min text-base p-2 rounded-lg z-20 cursor-pointer"
+              >
+                Upload Image
+              </label>
+              <img
+                src={imgPreview}
+                className={`w-full h-full absolute pointer-events-none ${
+                  imgPreview == "" ? "hidden" : ""
+                }`}
+              />
+            </div>
+
+            <div className="flex flex-col gap-2">
+              <input
+                type="text"
+                name="alt"
+                placeholder="alt text"
+                className="bg-gray-200 focus:border-none focus:outline-none p-2 rounded-md "
+              />
+
+              <div className="flex gap-2">
+                <label htmlFor="color" className="text-lg my-auto">
+                  color:
+                </label>
+                <select
+                  name="color"
+                  id="color"
+                  placeholder="none"
+                  className="bg-gray-200 focus:border-none focus:outline-none p-2 rounded-md w-full"
+                >
+                  <option value="NONE">none</option>
+                  <option value="ORANGE">orange</option>
+                  <option value="RED">red</option>
+                  <option value="GREEN">green</option>
+                  <option value="BLUE">blue</option>
+                  <option value="PURPLE">purple</option>
+                  <option value="PINK">pink</option>
+                </select>
+              </div>
+            </div>
+          </div>
         </div>
+      </form>
+
+      {/* Flowers */}
+      <div
+        className={`flex gap-8 pt-3 overflow-x-scroll relative bg-color-300 scrollbar-none`}
+      >
+        <div className="ml-12"></div>
+        {flowersCount.map((v) => {
+          return (
+            <FlowerEdit
+              key={v}
+              tags={tags}
+              flowerKey={v}
+              removeFlower={removeFlower}
+            />
+          );
+        })}
+        <button
+          className="w-52 h-28 sm:w-72 sm:h-40 bg-gray-200 rounded-xl inline-flex justify-center items-center font-jua text-5xl mb-[304px]"
+          onClick={() => {
+            setFlowerCount([
+              ...flowersCount,
+              flowersCount[flowersCount.length - 1] + 1,
+            ]);
+          }}
+        >
+          <div className="w-52 h-28 sm:w-72 sm:h-40 text-center leading-[7rem] sm:leading-[10rem] ">
+            +
+          </div>
+        </button>
+
+        <div className="ml-12"></div>
       </div>
-    </>
+
+      <div className="flex flex-col gap-2 w-72">
+        <button
+          type="submit"
+          form="mainForm"
+          className="bg-black text-white text-xl rounded-lg p-2"
+        >
+          Post
+        </button>
+
+        <p className="max-w-[380px]">{loadingStatus}</p>
+      </div>
+    </div>
   );
 }
+
+/*
+ */
