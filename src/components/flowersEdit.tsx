@@ -29,7 +29,7 @@ export default function FlowersEdit({ tags, flowers }: props) {
     <div className="flex gap-2 m-2 items-center">
       <div>
         <h1 className="text-3xl font-jua">Create new flower</h1>
-        <FlowerEdit tags={tags} standAlone={true} />
+        <FlowerEdit tags={tags} standAlone={true}  />
 
         <p>{loadingStatus}</p>
       </div>

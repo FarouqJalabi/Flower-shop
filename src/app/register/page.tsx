@@ -17,6 +17,7 @@ export default function Register() {
   if (status == "authenticated") {
     route.push("/signout");
   }
+
   const [invalidEmail, setInvalidEmail] = useState(false);
   const [invalidPassword, setInvalidPassword] = useState(false);
   const [invalidRePassword, setInvalidRePassword] = useState(false);
@@ -25,7 +26,7 @@ export default function Register() {
   const [errorValue, setErrorValue] = useState("");
 
   const postUser = async (name: string, password: string, email: string) => {
-    return await fetch("api/user", {
+    return await fetch("/api/user", {
       method: "POST",
       body: JSON.stringify({
         name: name,
@@ -72,6 +73,7 @@ export default function Register() {
       } else {
         setErrorValue("You have an account, please login");
         setInvalidEmail(true);
+        console.log(res);
       }
     }
   };

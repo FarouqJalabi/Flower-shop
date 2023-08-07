@@ -3,7 +3,7 @@ import Contact from "./contact";
 
 export default function Footer() {
   return (
-    <section className="flex flex-col md:flex-row bg-black text-white gap-10 p-4 py-9">
+    <footer className="flex flex-col md:flex-row bg-black text-white gap-10 p-4 py-9">
       <div className="flex-1">
         <div className="flex relative gap-2">
           <h1 className="text-3xl font-jua">What is this?</h1>
@@ -48,9 +48,6 @@ export default function Footer() {
           />
         </a>
       </div>
-    </section>
-    // <div className="text-center">
-    //  <p>Flower shop copyright ©</p>
-    //  </div>
+    </footer>
   );
 }

@@ -11,14 +11,15 @@ import { useSearchParams } from "next/navigation";
 export default function Login() {
   const route = useRouter();
   const { status } = useSession();
+  console.log(status, "Status");
   if (status == "authenticated") {
     route.push("/signout");
   }
 
   const searchParams = useSearchParams();
   const callback_url = searchParams.get("callback") || "/";
-  console.log(callback_url);
 
+  console.log(callback_url, "Status");
   //Validations
   const [invalidEmail, setInvalidEmail] = useState(false);
   const [invalidPassword, setInvalidPassword] = useState(false);
@@ -49,6 +50,7 @@ export default function Login() {
         password: formData.password,
       });
 
+      console.log(res, "res");
       if (res?.error) {
         setErrorValue("Either the password or email is wrong");
         setInvalidEmail(true);

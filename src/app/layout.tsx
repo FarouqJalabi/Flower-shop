@@ -10,10 +10,23 @@ import { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Flower Shop",
-  description: "Mock flower shop",
-  // other: {
-  //   "google-site-verification": "ZVGdHmoplW_pBTM-dYjSBsi42jYQ1pnj6pWFqJLlInI",
-  // },
+  description: "A mock flower shop",
+  openGraph: {
+    type: "website",
+    url: "https://flower-shop-three.vercel.app/",
+    title: "Flower Shop",
+    description: "A mock flower shop",
+    siteName: "Flower shop",
+    // images: [
+    //   {
+    //     url: "https://example.com/og.png",
+    //   },
+    // ],
+  },
+
+  other: {
+    "google-site-verification": "ZVGdHmoplW_pBTM-dYjSBsi42jYQ1pnj6pWFqJLlInI",
+  },
 };
 
 const inter = Inter({ subsets: ["latin"] });

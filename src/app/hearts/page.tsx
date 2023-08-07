@@ -1,8 +1,7 @@
-import FlowersPreview from "@/components/flowers/flowersPreview";
+import Image from "next/image";
 import { getServerSession } from "next-auth";
 import { options } from "@/app/api/auth/[...nextauth]/options";
 import { prisma } from "../db";
-import Flower from "@/components/flowers/flower";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import FlowerFull from "@/components/flowers/flowerFull";
@@ -33,7 +32,18 @@ export default async function HeartedFlowers() {
   });
 
   return (
-    <main className="flex flex-wrap gap-2 p-2 max-w-2xl mx-auto justify-center">
+    <main className="flex flex-col gap-2 p-2 max-w-2xl mx-auto min-h-screen">
+      <div className="flex relative gap-2 mx-auto">
+        <h1 className="text-3xl font-jua">You&apos;re liked flowers</h1>
+        <div className="relative aspect-square h-12 mt-[-16px]  ">
+          <Image
+            src={"/heart.svg"}
+            alt={"An outline of an heart"}
+            fill
+            style={{ objectFit: "contain" }}
+          />
+        </div>
+      </div>
       {user?.flowersLiked.map((f) => {
         return <FlowerFull {...f} key={f.id} />;
       })}
@@ -45,7 +55,8 @@ export default async function HeartedFlowers() {
         }`}
       >
         <p>
-          It appears you don&apos;t have any flowers liked. If you do try to refresh!
+          It appears you don&apos;t have any flowers liked. If you do try to
+          refresh!
         </p>
 
         <Link href="/" className="underline text-blue-500 ml-auto my-auto ">
