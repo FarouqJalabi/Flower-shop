@@ -45,13 +45,6 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <head>
-        <meta
-          name="google-site-verification"
-          content="ZVGdHmoplW_pBTM-dYjSBsi42jYQ1pnj6pWFqJLlInI"
-        />
-      </head>
-      {/*! ERROR comes from this  */}
       <body className={`${inter.className} ${jua.variable} overflow-x-hidden`}>
         <NextAuthProvider>
           <Nav />
