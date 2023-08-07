@@ -11,6 +11,7 @@ import { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Flower Shop",
   description: "A mock flower shop",
+  metadataBase: new URL("https://flower-shop-three.vercel.app/"),
   openGraph: {
     type: "website",
     url: "https://flower-shop-three.vercel.app/",
