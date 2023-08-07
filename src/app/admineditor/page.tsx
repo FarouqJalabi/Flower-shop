@@ -6,6 +6,11 @@ import PreviewOrder from "@/components/flowers/previewOrder";
 
 export default async function AdminEditor() {
   const previews = await prisma.flowerPreviews.findMany({
+    orderBy: [
+      {
+        order: "desc",
+      },
+    ],
     select: { title: true, id: true },
   });
 

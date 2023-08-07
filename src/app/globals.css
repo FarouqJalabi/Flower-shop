@@ -1,16 +1,8 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-/* Hide scrollbar for Chrome, Safari and Opera */
-.overflow-x-scroll::-webkit-scrollbar {
-    display: none;
-}
 
-/* Hide scrollbar for IE, Edge and Firefox */
-.overflow-x-scroll{
-    -ms-overflow-style: none; /* IE and Edge */
-    scrollbar-width: none; /* Firefox */
-}
+
 @layer utilities {
   
 .overflow-2-liner {
@@ -21,3 +13,27 @@
    -webkit-box-orient: vertical;
 }
 }
+/* Scrollbar styling for Firefox, Edge, and Chrome */
+.overflow-x-scroll::-webkit-scrollbar {
+  height: 8px;
+}
+
+.overflow-x-scroll::-webkit-scrollbar-thumb {
+  background-color: #808080;
+  border-radius: 999px;
+}
+
+.overflow-x-scroll::-webkit-scrollbar-thumb:hover {
+  background-color: #606060;
+}
+
+.overflow-x-scroll::-webkit-scrollbar-track {
+  background-color: #f0f0f0;
+}
+
+/* Scrollbar styling for Safari */
+.overflow-x-scroll {
+  scrollbar-width: thin;
+}
+
+

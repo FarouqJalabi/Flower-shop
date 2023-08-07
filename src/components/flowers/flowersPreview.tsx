@@ -62,49 +62,20 @@ export default function FlowersPreview({
       <div className={`flex py-2 px-16 ${color == "none" ? "" : "hidden"}`}>
         <div>
           <h1 className="text-2xl font-extrabold">{header}</h1>
-          <h2 className="text-lg">{secondHeader}</h2>
+          <h2 className="text-lg whitespace-pre-line">{secondHeader}</h2>
         </div>
         <Link href={"/"} className="underline text-blue-500 ml-auto my-auto ">
           {"See more ➜"}
         </Link>
       </div>
-      <div className="relative">
-        <div
-          className={`flex gap-8 pt-3 overflow-x-scroll relative bg-${color}-300 scrollbar-none`}
-        >
-          <div className="ml-12"></div>
-          {collectionId.map((v) => {
-            return <Flower {...v} key={v.id} />;
-          })}
-          <div className="ml-12"></div>
-        </div>
-
-        <Image
-          src={"/arrowRight.svg"}
-          alt="Left arrow"
-          width={48}
-          height={48}
-          className={`absolute -scale-100 bg-white rounded-full w-12 h-12 top-1/2 -translate-y-1/2 left-4 `}
-          onClick={(e) => {
-            e.currentTarget.parentElement?.firstElementChild?.scrollBy(
-              -scroll_speed,
-              0
-            );
-          }}
-        />
-        <Image
-          src={"/arrowRight.svg"}
-          alt="Left arrow"
-          width={48}
-          height={48}
-          className="absolute  bg-white rounded-full w-12 h-12 top-1/2 -translate-y-1/2 right-4"
-          onClick={(e) => {
-            e.currentTarget.parentElement?.firstElementChild?.scrollBy(
-              scroll_speed,
-              0
-            );
-          }}
-        />
+      <div
+        className={`flex gap-8 pt-3 overflow-x-scroll relative bg-${color}-300 `}
+      >
+        <div className="ml-12"></div>
+        {collectionId.map((v) => {
+          return <Flower {...v} key={v.id} />;
+        })}
+        <div className="ml-12"></div>
       </div>
     </section>
   );

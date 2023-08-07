@@ -16,12 +16,12 @@ export default function TagEdit({ tags }: props) {
       return;
     }
     setLoadingStatus("Posting tag...");
-    const res = await fetch(
-      `api/tag/${formData.tag.toString().toLowerCase()}`,
-      { method: "POST" }
-    );
+    const res = await fetch(`api/tag/${formData.tag.toString()}`, {
+      method: "POST",
+    });
 
     setLoadingStatus(res.statusText);
+    console.log(res);
     if (res.ok) {
       window.location.reload();
     }
