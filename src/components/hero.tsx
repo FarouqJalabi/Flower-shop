@@ -3,7 +3,7 @@ import Image from "next/image";
 export default function Hero() {
   return (
     <>
-      <section className="flex ">
+      <section className="flex  overflow-clip">
         <div className="flex-1 m-12">
           <div className="mb-10">
             <div className="flex relative gap-4">
