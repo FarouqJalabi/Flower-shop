@@ -31,11 +31,6 @@ export default function FlowersPreview({
     color = "none";
   }
 
-  const onScroll: UIEventHandler<HTMLDivElement> = (
-    event: React.WheelEvent<HTMLDivElement>
-  ) => {
-    console.log(event.currentTarget.scrollWidth);
-  };
   const buttonScroll = (
     e: React.MouseEvent<HTMLButtonElement>,
     dir: 1 | -1
@@ -108,7 +103,6 @@ export default function FlowersPreview({
       <div className="relative">
         <div
           className={`flex gap-8 pt-3 overflow-x-scroll relative bg-${color}-300 `}
-          onScroll={onScroll}
         >
           {/* <div className="ml-12"></div> */}
           {collectionId.map((v, i) => {
