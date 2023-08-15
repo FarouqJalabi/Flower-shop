@@ -117,7 +117,7 @@ export default function FlowersPreview({
           {/* <div className="ml-12"></div> */}
         </div>
         <button
-          className="absolute top-1/2 -translate-y-1/2 -scale-x-100 mx-4"
+          className="absolute top-1/2 -translate-y-1/2 -scale-x-100 mx-4 max-sm:hidden "
           onClick={(e) => {
             buttonScroll(e, -1);
           }}
@@ -130,7 +130,7 @@ export default function FlowersPreview({
           />
         </button>
         <button
-          className="absolute top-1/2 -translate-y-1/2 right-0 mx-4"
+          className="absolute top-1/2 -translate-y-1/2 right-0 mx-4 max-sm:hidden "
           onClick={(e) => {
             buttonScroll(e, 1);
           }}
