@@ -3,18 +3,13 @@ import Image from "next/image";
 import { useState } from "react";
 import { signIn } from "next-auth/react";
 import Link from "next/link";
-import { useSession } from "next-auth/react";
 import { FormEvent } from "react";
 import { useRouter } from "next/navigation";
 
 import { useSearchParams } from "next/navigation";
 export default function Login() {
   const route = useRouter();
-  const { status } = useSession();
-  console.log(status, "Status");
-  if (status == "authenticated") {
-    route.push("/signout");
-  }
+  
 
   const searchParams = useSearchParams();
   const callback_url = searchParams.get("callback") || "/";
