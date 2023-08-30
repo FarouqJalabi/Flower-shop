@@ -36,19 +36,24 @@ export default function FlowersPreview({
   ) => {
     const container = e.currentTarget.parentElement as HTMLElement;
     const flowerContainer = container?.children[0];
-    const flowersScroller = Array.from(
+    const flowersScrollers = Array.from(
       flowerContainer?.getElementsByClassName("scrollTo")
     ) as Array<HTMLElement>;
-// ! Isn't responsive
-    const goal = 1000 * dir;
-    var flowerClosest = flowersScroller.reduce((prev, curr) => {
-      return Math.abs(curr.getBoundingClientRect().x - goal) <
-        Math.abs(prev.getBoundingClientRect().x - goal)
-        ? curr
-        : prev;
+
+    // ! Bad running through all flowers
+    // * Take advantage of the fact they are sorted!
+    // Outside flower is the flower we wawnt most to the left
+    let outsideFlower = flowersScrollers.reduce((prev, curr) => {
+      let prevDifference = Math.abs(
+        prev.getBoundingClientRect().right - window.innerWidth * dir
+      );
+      let currDifference = Math.abs(
+        curr.getBoundingClientRect().right - window.innerWidth * dir
+      );
+      return prevDifference < currDifference ? prev : curr;
     });
 
-    flowerClosest.scrollIntoView({
+    outsideFlower.scrollIntoView({
       behavior: "smooth",
       block: "nearest",
       inline: "start",
