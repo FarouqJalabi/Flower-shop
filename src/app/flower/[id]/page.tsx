@@ -87,19 +87,21 @@ export default async function Page({ params }: props) {
   }
   return (
     <div className="flex sm:flex-row flex-col ">
-      <Image
-        src={
-          "https://eljnfbtxmeteozramfkt.supabase.co/storage/v1/object/public/flower_images/" +
-          Info.id +
-          ".jpg"
-        }
-        alt={Info.alt}
-        className="flex-1 max-sm:w-full object-cover"
-        width={288}
-        height={160}
-        sizes="(max-width: 640px) 100vw, 40vw"
-        priority
-      />
+      <div className="relative w-80">
+        <Image
+          src={
+            "https://eljnfbtxmeteozramfkt.supabase.co/storage/v1/object/public/flower_images/" +
+            Info.id +
+            ".jpg"
+          }
+          alt={Info.alt}
+          className="flex-1 max-sm:w-full object-cover absolute "
+          priority
+          width={800}
+          height={600}
+        />
+      </div>
+
       <div className="flex-1 px-2 flex flex-col">
         <h1 className="text-3xl">{Info.title}</h1>
         <h2 className="text-2xl">{Info.price}$</h2>
@@ -111,7 +113,7 @@ export default async function Page({ params }: props) {
           />
           <LikeButton flower={Info} user={Info.users} big={true} />
         </div>
-        <div className="flex gap-2 my-2">
+        <div className="flex flex-wrap gap-2 my-2">
           {Info.tags?.map((v) => {
             return (
               <p className="bg-gray-300 p-2 rounded-xl " key={v.tag}>

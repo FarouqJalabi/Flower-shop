@@ -34,10 +34,10 @@ export default function FlowersEdit({ tags, flowers }: props) {
         <p>{loadingStatus}</p>
       </div>
       <div className="bg-gray-400 w-1 h-28 rounded-full mt-8 mx-5"></div>
-      <div className="grid grid-rows-2 grid-flow-col gap-2 pt-6 items-center ">
+      <div className="grid grid-rows-2 grid-flow-col gap-2 pt-6 items-center overflow-x-auto w-full overflow-y-hidden">
         {flowers.map((flower) => {
           return (
-            <div key={flower.id} className="flex gap-2 h-10 items-center">
+            <div key={flower.id} className="flex gap-2 h-15 items-center">
               <button
                 className="relative bg-red-500 w-10 h-10 rounded-full"
                 onClick={() => {

@@ -109,6 +109,7 @@ export default function Register() {
             <input
               placeholder="Name"
               name="name"
+              autoComplete="name"
               className={`bg-gray-200 focus:border-none focus:outline-none p-2 rounded-md ${
                 invalidName ? "animate-wiggle bg-red-500" : ""
               }`}
@@ -122,6 +123,7 @@ export default function Register() {
               type="email"
               placeholder="example@mail.com"
               name="email"
+              autoComplete="email"
               className={`bg-gray-200 focus:border-none focus:outline-none p-2 rounded-md 
 ${invalidEmail ? "animate-wiggle bg-red-500" : ""}`}
               onChange={() => {
@@ -135,8 +137,10 @@ ${invalidEmail ? "animate-wiggle bg-red-500" : ""}`}
               type="password"
               placeholder="Password"
               name="password"
+              autoComplete="new-password"
+              // autoComplete="email"
               className={`bg-gray-200 focus:border-none focus:outline-none p-2 rounded-md
-${invalidPassword ? "animate-wiggle bg-red-500" : ""}`}
+${invalidPassword ? "animate-wiggle bg-red-500 " : ""}`}
               onChange={() => {
                 // setPasswordValue(e.target.value);
                 setErrorValue("");
@@ -147,6 +151,7 @@ ${invalidPassword ? "animate-wiggle bg-red-500" : ""}`}
               type="password"
               placeholder="Retype password"
               name="rePassword"
+              autoComplete="new-password"
               className={`bg-gray-200 focus:border-none focus:outline-none p-2 rounded-md
 ${invalidRePassword ? "animate-wiggle bg-red-500" : ""}`}
               onChange={() => {

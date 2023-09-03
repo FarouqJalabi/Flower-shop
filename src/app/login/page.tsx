@@ -4,12 +4,9 @@ import { useState } from "react";
 import { signIn } from "next-auth/react";
 import Link from "next/link";
 import { FormEvent } from "react";
-import { useRouter } from "next/navigation";
-
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 export default function Login() {
   const route = useRouter();
-  
 
   const searchParams = useSearchParams();
   const callback_url = searchParams.get("callback") || "/";
@@ -22,7 +19,10 @@ export default function Login() {
   const [errorValue, setErrorValue] = useState("");
 
   const validLogin = async (e: FormEvent<HTMLFormElement>) => {
+    // ? Why don't formEvent allow for preventdefault?
+    // const validLogin = async (e:any) => {
     e.preventDefault();
+
     let formObject = new FormData(e.currentTarget);
     let formData = Object.fromEntries(formObject);
     //Valid email?
@@ -38,9 +38,9 @@ export default function Login() {
     } else {
       // Everything went okay
       setErrorValue("Loging you in...");
+
       const res = await signIn("credentials", {
-        redirect: true,
-        callbackUrl: callback_url,
+        redirect: false,
         email: formData.email,
         password: formData.password,
       });
@@ -50,6 +50,8 @@ export default function Login() {
         setErrorValue("Either the password or email is wrong");
         setInvalidEmail(true);
         setInvalidPassword(true);
+      } else {
+        route.push(callback_url);
       }
     }
   };
@@ -92,8 +94,9 @@ export default function Login() {
               name="email"
               placeholder="example@mail.com"
               id="username"
+              autoComplete="email"
               className={`bg-gray-200 focus:border-none focus:outline-none p-2 rounded-md ${
-                invalidEmail ? "animate-wiggle bg-red-500" : ""
+                invalidEmail ? "animate-wiggle !bg-red-500" : ""
               }`}
               onChange={() => {
                 setInvalidEmail(false);
@@ -106,8 +109,9 @@ export default function Login() {
               placeholder="Password"
               name="password"
               id="password"
+              autoComplete="current-password"
               className={`bg-gray-200 focus:border-none focus:outline-none p-2 rounded-md ${
-                invalidPassword ? "animate-wiggle bg-red-500" : ""
+                invalidPassword ? "animate-wiggle !bg-red-500" : ""
               }`}
               onChange={() => {
                 setInvalidPassword(false);

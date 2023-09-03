@@ -177,7 +177,7 @@ export default function FlowerEdit({
           className="bg-gray-200 focus:border-none focus:outline-none p-2 rounded-md  w-1/2"
         />
       </div>
-      <div className="grid grid-cols-2 w-full max-h-64 overflow-y-scroll gap-y-1 h-min text-sm">
+      <div className="grid grid-cols-2 w-full overflow-y-auto max-h-44 gap-y-1 text-sm">
         {tags.map((v: string) => {
           return (
             <div key={v}>
