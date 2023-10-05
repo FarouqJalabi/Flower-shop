@@ -84,9 +84,9 @@ export default async function searchPage({ params, searchParams }: props) {
           }`}
           href={
             "/search/" +
-              (Number(params.page) - 1) +
-              "?search=" +
-              searchParams?.search || ""
+            (Number(params.page) - 1) +
+            "?search=" +
+            (searchParams?.search || "")
           }
           prefetch
         >
@@ -99,9 +99,9 @@ export default async function searchPage({ params, searchParams }: props) {
         `}
           href={
             "/search/" +
-              (Number(params.page) + 1) +
-              "?search=" +
-              searchParams?.search || ""
+            (Number(params.page) + 1) +
+            "?search=" +
+            (searchParams?.search || "")
           }
           prefetch
         >

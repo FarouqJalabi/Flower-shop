@@ -115,6 +115,7 @@ export default function FlowerEdit({
           Upload Image
         </label>
         <img
+          alt="Preview of uploaded image"
           src={imgPreview}
           className={`w-full h-full absolute pointer-events-none ${
             imgPreview == "" ? "hidden" : ""
