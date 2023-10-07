@@ -10,10 +10,10 @@
 - Adding items to shopping list
 
 Pages:
+
 - Page for each flower
 - Main discover page
 - Search page
-
 
 ### Manager side:
 
@@ -22,7 +22,6 @@ Pages:
 - Adding tags
 - Deleting flowers
 - Clients seeing changes within a minute
-
 
 ![Image of website](https://github.com/FarouqJalabi/Flower-shop/blob/main/PreviewWebsite.jpg?raw=true)
 
