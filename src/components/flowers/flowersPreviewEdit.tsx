@@ -226,9 +226,7 @@ export default function FlowersPreviewEdit({ tags }: props) {
       </form>
 
       {/* Flowers */}
-      <div
-        className={`flex gap-8 pt-3 overflow-x-scroll relative bg-color-300 scrollbar-none`}
-      >
+      <div className={`flex gap-8 pt-3 relative bg-color-300 overflow-auto`}>
         <div className="ml-12"></div>
         {flowersCount.map((v) => {
           return (
