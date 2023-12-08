@@ -1,6 +1,7 @@
 # Mock flower shop
 
-Visit the site: [Flower shop](flower-shop-three.vercel.app)
+Visit the site: [Flower shop](https://flower-shop-three.vercel.app)
+
 [Figma file](https://www.figma.com/file/flaOwHPoosEWSLoFbKBW4J/flower-shop?type=design&mode=design&t=18Czr5AlmXNK4Qcb-0)
 
 ## What is this?
