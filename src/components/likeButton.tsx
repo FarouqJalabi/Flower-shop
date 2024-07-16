@@ -1,6 +1,5 @@
 "use client";
 import Image from "next/image";
-import { useState } from "react";
 import { useGlobalContext } from "@/app/context/store";
 
 export default function LikeButton({ id }: { id: string }) {
