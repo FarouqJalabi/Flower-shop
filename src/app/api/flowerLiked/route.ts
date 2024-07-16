@@ -1,7 +1,6 @@
 import { getToken } from "next-auth/jwt";
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/app/db";
-import { Prisma } from "@prisma/client";
 
 export async function POST(req: NextRequest) {
   const token = await getToken({ req });
