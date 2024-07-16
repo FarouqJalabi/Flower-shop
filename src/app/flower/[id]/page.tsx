@@ -11,25 +11,56 @@ import { Metadata } from "next";
 type props = {
   params: { id: string };
 };
-export async function generateMetadata({ params }: props): Promise<Metadata> {
-  // const id = params.id
-  return {
-    title: "Flower Shop",
-    description: "Mock flower shop",
-    openGraph: {
-      title: "Flower shop: Flower",
-      images: [
-        {
-          url:
-            "https://eljnfbtxmeteozramfkt.supabase.co/storage/v1/object/public/flower_images/" +
-            params.id +
-            ".jpg",
-          alt: "Flower image",
-        },
-      ],
-    },
-  };
-}
+
+export const metadata: Metadata = {
+  title: "Flower Shop",
+  description: "Mock flower shop",
+  openGraph: {
+    title: "Flower shop: Flower",
+    url: "https://flower-shop-three.vercel.app/",
+    siteName: "Flower Shop",
+
+    images: [
+      {
+        url:
+          "https://eljnfbtxmeteozramfkt.supabase.co/storage/v1/object/public/flower_images/" +
+          // params.id +
+          "clksqth2f00019us4xrma6cbg" +
+          ".jpg",
+        alt: "Flower image",
+        width: 800,
+        height: 600,
+      },
+    ],
+    type: "website",
+  },
+};
+// export async function generateMetadata({ params }: props): Promise<Metadata> {
+//   // const id = params.id
+//   return {
+//     title: "Flower Shop",
+//     description: "Mock flower shop",
+//     openGraph: {
+//       title: "Flower shop: Flower",
+//       url: "https://flower-shop-three.vercel.app/",
+//       siteName: "Flower Shop",
+
+//       images: [
+//         {
+//           url:
+//             "https://eljnfbtxmeteozramfkt.supabase.co/storage/v1/object/public/flower_images/" +
+//             // params.id +
+//             "clksqth2f00019us4xrma6cbg" +
+//             ".jpg",
+//           alt: "Flower image",
+//           width: 800,
+//           height: 600,
+//         },
+//       ],
+//       type: "website",
+//     },
+//   };
+// }
 
 export default async function Page({ params }: props) {
   const data = await getServerSession(options);
