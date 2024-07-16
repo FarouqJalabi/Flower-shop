@@ -12,7 +12,7 @@ export default function Flower(Info: FlowerInfo) {
   return (
     <div className="text-center">
       <Link href={`/flower/${Info.id}`}>
-        <div className="relative w-72 h-40 bg-gray-300 overflow-hidden rounded-xl">
+        <div className="relative w-52 sm:w-72 sm:h-40 bg-gray-300 overflow-hidden rounded-xl">
           <Image
             src={
               "https://eljnfbtxmeteozramfkt.supabase.co/storage/v1/object/public/flower_images/" +
@@ -22,7 +22,7 @@ export default function Flower(Info: FlowerInfo) {
             alt={Info.alt}
             width={288}
             height={160}
-            style={{ objectFit: "cover" }}
+            className="object-cover "
           />
         </div>
       </Link>

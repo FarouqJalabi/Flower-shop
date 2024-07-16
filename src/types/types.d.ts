@@ -3,6 +3,7 @@ declare module "next-auth" {
     accessToken: string;
   }
 }
+
 declare global {
   export interface user {
     id: string;
@@ -10,11 +11,14 @@ declare global {
   export interface FlowerInfo {
     id: string;
     title: string;
+    description: string;
     imgUrl?: string;
     alt: string;
     price: number;
     salePrice?: number | null;
-    users?: Array<user>;
+    flowersLiked?: Array<user>;
+    shoppingList?: Array<user>;
+    tags?: Array<string>;
   }
 }
 export {};

@@ -1,6 +1,4 @@
-import Hero from "@//components/hero";
 import FlowersPreviewEdit from "@/components/flowers/flowersPreviewEdit";
-import { prisma } from "../db";
 
 export default async function Home() {
   //Maybe get it from localStorage if there?
