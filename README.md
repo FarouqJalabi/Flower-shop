@@ -1,8 +1,10 @@
 # Mock flower shop
 
+Visit the site: [Flower shop](flower-shop-three.vercel.app)
+
 ## What is this?
 
-This is a mock e-commerce website. The project is made in next js, supabase, prisma and next auth. You can visit the site here: [Flower shop](flower-shop-three.vercel.app)
+This is a mock e-commerce website. The project is made in next js, supabase, prisma and next auth.
 
 The admin is able to edit the content of the page.
 
