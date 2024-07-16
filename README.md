@@ -6,7 +6,7 @@
 
 - Creating an account
 - Adding items to liked list
-- Adding items to shopping list
+- Adding items to shopping lisu
 
 ### Manager side:
 

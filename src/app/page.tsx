@@ -1,10 +1,10 @@
 import Hero from "../components/hero";
 import FlowersPreview from "@/components/flowers/flowersPreview";
 import { PrismaClient } from "@prisma/client";
-
+const prisma = new PrismaClient();
 export default async function Home() {
-  const prisma = new PrismaClient();
   const flowerPreviews = await prisma.flowerPreviews.findMany();
+  // const flowerPreviews: Array<any> = [];
 
   return (
     <main>
@@ -19,6 +19,7 @@ export default async function Home() {
             header={v.title}
             secondHeader={v.title}
             collectionId={flowers}
+            key={v.id}
           />
         );
       })}

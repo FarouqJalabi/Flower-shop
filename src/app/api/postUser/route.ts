@@ -1,12 +1,22 @@
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient, Prisma } from "@prisma/client";
 
-export async function POST(req:Request) {
-  // Handle case already have account
-  const body = await req.json()
- 
-  console.log(body, "Body")
-  const prisma = new PrismaClient();
-  const res = await prisma.user.create({data:body})
+const prisma = new PrismaClient();
 
-  return new Response("OK")
+export async function POST(req: Request) {
+  // Handle existing account
+
+  // Handle login from here? leads to can't spam api
+
+  const body = await req.json();
+
+  try {
+    await prisma.user.create({ data: body });
+  } catch (e) {
+    if (e instanceof Prisma.PrismaClientInitializationError) {
+      return new Response("401");
+    } else {
+      throw e;
+    }
+  }
+  return new Response("OK");
 }

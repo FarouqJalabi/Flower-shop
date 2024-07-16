@@ -30,9 +30,9 @@ model Flower {
   salePrice Float?
   price     Float
 
-  user   User?   @relation(fields: [userId], references: [id])
-  userId String?
+  users User[]
 
   flowerPreview   FlowerPreviews? @relation(fields: [flowerPreviewId], references: [id])
   flowerPreviewId String?
+  userId          String?
 }
