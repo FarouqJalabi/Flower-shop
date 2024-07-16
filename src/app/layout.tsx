@@ -15,11 +15,10 @@ export const metadata: Metadata = {
 };
 
 const inter = Inter({ subsets: ["latin"] });
-export const jua = Jua({
+const jua = Jua({
   subsets: ["latin"],
   weight: "400",
   variable: "--font-jua",
-  display: "swap",
 });
 
 export default function RootLayout({
