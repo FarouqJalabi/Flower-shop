@@ -21,7 +21,7 @@ export default function Flowers() {
       {/* <Flower info={example_info} />, we want the value not variable */}
       {example_ids.map((v) => {
         example_info.id = v;
-        return <Flower {...example_info} />;
+        return <Flower {...example_info} key={v} />;
       })}
     </section>
   );

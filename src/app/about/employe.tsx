@@ -14,7 +14,7 @@ export default function Employe() {
       <div className="flex-1">
         <h1 className="text-2xl font-bold">Gustav Long</h1>
         <h1 className="text-2xl font-bold">Ceo</h1>
-        <p>Flowers bring happines to people, that's why I love my job!</p>
+        <p>Flowers bring happines to people, that&apos;s why I love my job!</p>
       </div>
     </div>
   );

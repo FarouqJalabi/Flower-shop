@@ -21,8 +21,8 @@ export default function Hero() {
             </div>
             <p className="text-2xl">
               With our collection of over 500+ flowers there is one flower that
-              will fit you're need. With the help of our experts we can deliver
-              then the whole year!
+              will fit you&apos;re need. With the help of our experts we can
+              deliver then the whole year!
             </p>
           </div>
           <div>
