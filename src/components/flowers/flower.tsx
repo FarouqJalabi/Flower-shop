@@ -14,8 +14,11 @@ export default function Flower({ Info, scrollIndex }: props) {
         className="absolute scrollTo top-1/2 -translate-x-1/2 w-1 h-1 bg-red-600"
         data-scroll-index={scrollIndex}
       ></div>
-      <Link href={`/flower/${Info.id}`}>
-        <div className="relative w-52 h-28 sm:w-72 sm:h-40 bg-gray-300 overflow-hidden rounded-xl">
+      <Link
+        href={`/flower/${Info.id}`}
+        className="object-cover relative w-52 h-28 sm:w-72 sm:h-40 bg-red-700 "
+      >
+        <div className="object-cover relative w-52 h-28 sm:w-72 sm:h-40 bg-gray-300 rounded-xl overflow-hidden">
           <Image
             src={
               "https://eljnfbtxmeteozramfkt.supabase.co/storage/v1/object/public/flower_images/" +
@@ -23,8 +26,10 @@ export default function Flower({ Info, scrollIndex }: props) {
               ".jpg"
             }
             alt={Info.alt}
-            width={288}
-            height={160}
+            // width={288}
+            // height={160}
+            sizes="@media (min-width: 640px) 18rem, 13rem"
+            fill
             className="object-cover"
           />
         </div>

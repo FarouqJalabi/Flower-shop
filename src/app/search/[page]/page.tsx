@@ -31,6 +31,7 @@ export default async function searchPage({ params, searchParams }: props) {
           ],
         }
       : {};
+
   const flowersCount = await prisma.flower.count({
     where: searchWhere,
   });
@@ -61,7 +62,7 @@ export default async function searchPage({ params, searchParams }: props) {
     orderBy: {
       _relevance: {
         fields: ["title", "description"],
-        search: searchParams?.search!,
+        search: searchParams?.search ? searchParams?.search! : "",
         sort: "desc",
       },
     },
@@ -83,24 +84,24 @@ export default async function searchPage({ params, searchParams }: props) {
           }`}
           href={
             "/search/" +
-            (Number(params.page) - 1) +
-            "?search=" +
-            searchParams?.search!
+              (Number(params.page) - 1) +
+              "?search=" +
+              searchParams?.search || ""
           }
           prefetch
         >
           ➜
         </Link>
         <Link
-          className={`text-4xl sm:text-6xl font-black p-3 text-black scale-100 ${
+          className={`text-4xl sm:text-6xl font-black p-3 text-black ${
             params.page == pages ? "invisible" : ""
           }
         `}
           href={
             "/search/" +
-            (Number(params.page) + 1) +
-            "?search=" +
-            searchParams?.search!
+              (Number(params.page) + 1) +
+              "?search=" +
+              searchParams?.search || ""
           }
           prefetch
         >
