@@ -8,24 +8,22 @@ export default function TagEdit({ tags }: props) {
   const [loadingStatus, setLoadingStatus] = useState("");
   const createTag = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
     let formObject = new FormData(e.currentTarget as HTMLFormElement);
     let formData = Object.fromEntries(formObject);
     if (formData.tag.toString() == "") {
       setLoadingStatus("Can't post empty tag");
       return;
     }
-    setLoadingStatus("Posting tags");
-    const res = await fetch("api/postTag", {
-      method: "POST",
-      body: JSON.stringify({
-        tag: formData.tag.toString().toLowerCase(),
-      }),
-    });
+    setLoadingStatus("Posting tag...");
+    const res = await fetch(
+      `api/tag/${formData.tag.toString().toLowerCase()}`,
+      { method: "POST" }
+    );
+
+    setLoadingStatus(res.statusText);
     if (res.ok) {
-      setLoadingStatus("All done");
       window.location.reload();
-    } else {
-      setLoadingStatus("Tag already exist");
     }
   };
 
@@ -57,20 +55,13 @@ export default function TagEdit({ tags }: props) {
                 className="relative bg-red-500 w-10 h-10 rounded-full"
                 onClick={async () => {
                   setLoadingStatus("Deleting tag...");
-                  const res = await fetch("api/postTag", {
-                    method: "POST",
-                    body: JSON.stringify({
-                      tag: tag,
-                      deleteTag: true,
-                    }),
+
+                  const res = await fetch(`api/tag/${tag}`, {
+                    method: "DELETE",
                   });
+                  setLoadingStatus(res.statusText);
                   if (res.ok) {
-                    setLoadingStatus("All done");
                     window.location.reload();
-                  } else {
-                    setLoadingStatus(
-                      "Something went wrong. Refresh and try again"
-                    );
                   }
                 }}
               >

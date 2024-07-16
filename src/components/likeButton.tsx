@@ -22,13 +22,19 @@ export default function LikeButton({ flower, user, big = false }: props) {
   });
 
   const likeFlower = async (liked: boolean) => {
-    await fetch("/api/flowerLiked", {
-      method: "POST",
+    const res = await fetch(`/api/flower/${flower.id}`, {
+      method: "PATCH",
       body: JSON.stringify({
-        flowerLiked: liked,
-        flowerId: flower.id,
+        addToList: liked,
+        listType: "like",
       }),
     });
+
+    if (!res.ok) {
+      console.log(res.statusText);
+    }
+
+    console.log(res.statusText);
   };
   return (
     <button

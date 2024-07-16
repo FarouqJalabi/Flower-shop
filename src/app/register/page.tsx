@@ -23,7 +23,7 @@ export default function Register() {
   const [errorValue, setErrorValue] = useState("");
 
   const postUser = async (name: string, password: string, email: string) => {
-    return await fetch("api/postUser", {
+    return await fetch("api/user", {
       method: "POST",
       body: JSON.stringify({
         name: name,
