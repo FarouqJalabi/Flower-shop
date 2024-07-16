@@ -42,12 +42,12 @@ export default async function Page(props: any) {
         width={288}
         height={160}
         className="flex-1 max-sm:w-full object-cover"
-        sizes="(min-width: 640px) 100vw, 40vw"
+        sizes="(max-width: 640px) 100vw, 40vw"
         priority
       />
       <div className="flex-1 px-2 flex flex-col">
         <h1 className="text-3xl">{Info.title}</h1>
-        <h2 className="text-2xl">{Info.price}</h2>
+        <h2 className="text-2xl">{Info.price}$</h2>
         <p className="whitespace-pre-line">{Info.description}</p>
         <div className="flex gap-2 mt-auto">
           <ShoppingButton

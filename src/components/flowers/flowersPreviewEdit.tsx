@@ -20,11 +20,11 @@ export default function FlowersPreviewEdit({ tags }: props) {
   const handle_form = async (e: FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault();
     let formObject = new FormData(e.currentTarget as HTMLFormElement);
-    let formData = Object.fromEntries(formObject);
-
+    let formData = Object.fromEntries(formObject) as Record<string, any>;
     if (formData.color == "NONE") {
       delete formData.color;
       delete formData.img;
+      delete formData.alt;
     }
 
     let flowersElement = Array.from(
@@ -50,8 +50,51 @@ export default function FlowersPreviewEdit({ tags }: props) {
       });
       return flower;
     });
+
+    //Validation
+    const someEmpty = flowersData.some((v, f_i) => {
+      return Object.values(v).some((v, i) => {
+        //Image is empty
+        if (v.name == "") {
+          setLoadingStatus(
+            `The ${
+              f_i + 1
+            } flower has and empty image. Please make sure to fill out the form or delete a flower `
+          );
+          return true;
+        }
+        if (v == "" && i == 4) {
+          setLoadingStatus(
+            `The ${
+              f_i + 1
+            } flowers have an empty text input. Please make sure to fill them all out or delete a flower`
+          );
+          return true;
+        }
+        return false;
+      });
+    });
+    const someEmptyForm = Object.values(formData).some((v) => {
+      if (v.name == "") {
+        setLoadingStatus(
+          "The main form has an empty image input. Please fill it our or set color to none"
+        );
+      }
+      if (v == "") {
+        setLoadingStatus(
+          "The main form has an empty text input. Please make sure you fill out the form"
+        );
+        return true;
+      }
+      return false;
+    });
+    if (someEmpty || someEmptyForm) {
+      return;
+    }
+
     setLoadingStatus("Posting form data...");
 
+    return;
     await fetch("api/post", {
       method: "POST",
       body: JSON.stringify({
@@ -149,7 +192,7 @@ export default function FlowersPreviewEdit({ tags }: props) {
             >
               Revalidate page
             </button>
-            <p>{loadingStatus}</p>
+            <p className="max-w-[380px]">{loadingStatus}</p>
           </div>
         </form>
         {Array.from(Array(flowersCount)).map((v) => {

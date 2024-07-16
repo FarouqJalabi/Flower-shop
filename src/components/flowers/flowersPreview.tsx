@@ -40,7 +40,7 @@ export default function FlowersPreview({
         >
           <div className="flex-1  max-sm:pb-4 sm:px-16 pt-16">
             <h1 className="text-3xl font-bold">{header}</h1>
-            <p className="text-lg ">{secondHeader}</p>
+            <p className="text-lg  whitespace-pre-line">{secondHeader}</p>
             <Link href={"/"} className="underline text-black ml-auto my-auto ">
               {"See more ➜"}
             </Link>
@@ -62,7 +62,7 @@ export default function FlowersPreview({
       <div className={`flex py-2 px-16 ${color == "none" ? "" : "hidden"}`}>
         <div>
           <h1 className="text-2xl font-extrabold">{header}</h1>
-          <h2 className="text-lg ">{secondHeader}</h2>
+          <h2 className="text-lg">{secondHeader}</h2>
         </div>
         <Link href={"/"} className="underline text-blue-500 ml-auto my-auto ">
           {"See more ➜"}

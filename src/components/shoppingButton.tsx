@@ -12,9 +12,13 @@ export default function ShoppingButton({ flower, user, small = false }: props) {
   const router = useRouter();
   const [inCart, setInCart] = useState(user ? user.length != 0 : false);
 
-  const updateCart = new CustomEvent("customEvent_updateCart", {
-    detail: { flower: flower },
+  const addCart = new CustomEvent("customEvent_updateCart", {
+    detail: { v: 1 },
   });
+  const removeCart = new CustomEvent("customEvent_updateCart", {
+    detail: { v: -1 },
+  });
+
   return (
     <button
       className={`bg-black text-white font-jua ${
@@ -31,7 +35,7 @@ export default function ShoppingButton({ flower, user, small = false }: props) {
             }),
           });
 
-          dispatchEvent(updateCart);
+          dispatchEvent(!inCart ? addCart : removeCart);
         } else {
           router.push("/login");
         }
