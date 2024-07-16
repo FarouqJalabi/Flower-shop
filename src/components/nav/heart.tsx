@@ -1,14 +1,13 @@
 "use client";
 import Image from "next/image";
 import { useState, useEffect } from "react";
-import MiniFlower from "../miniFlower";
 import Link from "next/link";
 
 interface props {
   initLikes: number;
 }
 
-export default function Heart({ initLikes }: props) {
+export default function Heart({ initLikes = 0 }: props) {
   //Maybe get server session
   const [liked, setLiked] = useState(initLikes);
   const [listHidden, setListHidden] = useState(true);

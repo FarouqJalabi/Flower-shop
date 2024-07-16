@@ -5,6 +5,7 @@ import { prisma } from "../db";
 import Flower from "@/components/flowers/flower";
 import { redirect } from "next/navigation";
 import Link from "next/link";
+import FlowerFull from "@/components/flowers/flowerFull";
 
 export default async function HeartedFlowers() {
   const data = await getServerSession(options);
@@ -22,15 +23,19 @@ export default async function HeartedFlowers() {
             where: { id: data?.accessToken },
             select: { id: true },
           },
+          shoppingList: {
+            where: { id: data?.accessToken },
+            select: { id: true },
+          },
         },
       },
     },
   });
 
   return (
-    <main className="flex flex-wrap gap-2 m-2">
+    <main className="flex flex-wrap gap-2 p-2 max-w-2xl mx-auto justify-center">
       {user?.flowersLiked.map((f) => {
-        return <Flower {...f} key={f.id} />;
+        return <FlowerFull {...f} key={f.id} />;
       })}
       <div
         className={`${
