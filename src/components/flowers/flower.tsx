@@ -11,7 +11,7 @@ export default function Flower({ Info, scrollIndex }: props) {
   return (
     <div className="text-center max-w-min scroll-m-5 relative">
       <div
-        className="absolute scrollTo top-1/2 -translate-x-1/2 w-1 h-1 bg-red-600"
+        className="absolute scrollTo top-1/2 -translate-x-1/2 w-1 h-1 "
         data-scroll-index={scrollIndex}
       ></div>
       <Link

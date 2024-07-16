@@ -2,7 +2,6 @@
 import Flower from "./flower";
 import Image from "next/image";
 import Link from "next/link";
-import { UIEventHandler } from "react";
 interface props {
   header: string;
   secondHeader: string;
@@ -40,7 +39,7 @@ export default function FlowersPreview({
     const flowersScroller = Array.from(
       flowerContainer?.getElementsByClassName("scrollTo")
     ) as Array<HTMLElement>;
-
+// ! Isn't responsive
     const goal = 1000 * dir;
     var flowerClosest = flowersScroller.reduce((prev, curr) => {
       return Math.abs(curr.getBoundingClientRect().x - goal) <
@@ -104,11 +103,11 @@ export default function FlowersPreview({
         <div
           className={`flex gap-8 pt-3 overflow-x-scroll relative bg-${color}-300 `}
         >
-          {/* <div className="ml-12"></div> */}
+          <div className="pl-12 scrollTo"></div>
           {collectionId.map((v, i) => {
             return <Flower Info={v} key={v.id} scrollIndex={i} />;
           })}
-          {/* <div className="ml-12"></div> */}
+          <div className="pl-12 scrollTo"></div>
         </div>
         <button
           className="absolute top-1/2 -translate-y-1/2 -scale-x-100 mx-4 max-sm:hidden "
