@@ -4,12 +4,14 @@ import FlowerEdit from "./flowerEdit";
 
 import { createClient } from "@supabase/supabase-js";
 export default function FlowersPreviewEdit() {
-  let [flowersCount, setFlowerCount] = useState(3);
+  let [flowersCount, setFlowerCount] = useState(1);
+  let [loadingStatus, setLoadingStatus] = useState("");
   let flowerRef = createRef<HTMLDivElement>();
   const supabase = createClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL as string,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY as string
   );
+
   return (
     <>
       <h1 className="font-jua text-3xl">Create a new Flower Preview</h1>
@@ -31,7 +33,9 @@ export default function FlowersPreviewEdit() {
               return Object.fromEntries(fData);
             });
 
-            const post_res = await fetch("api/post", {
+            setLoadingStatus("Posting form data...");
+
+            await fetch("api/post", {
               method: "POST",
               body: JSON.stringify({
                 formData: formData,
@@ -40,19 +44,22 @@ export default function FlowersPreviewEdit() {
             })
               .then((response) => response.json())
               .then(async (res) => {
-                res.forEach(async (id: string, i: number) => {
+                console.log(res);
+                setLoadingStatus("Posting images...");
+                await res.forEach(async (id: string, i: number) => {
                   const { data, error } = await supabase.storage
                     .from("flower_images")
                     .upload(id + ".jpg", flowersData[i].img, {
-                      cacheControl: "3600",
                       upsert: false,
                     });
                 });
+
+                setLoadingStatus("Done! Check out the main page for changes");
               });
           }}
           className="flex"
         >
-          <div className="flex flex-col gap-3">
+          <div className="flex flex-col gap-3 text-center">
             <input
               type="text"
               name="title"
@@ -84,6 +91,7 @@ export default function FlowersPreviewEdit() {
             >
               Revalidate page
             </button>
+            <p>{loadingStatus}</p>
           </div>
         </form>
         {Array.from(Array(flowersCount)).map((v) => {

@@ -43,6 +43,7 @@ export default function Register() {
       setErrorValue("The name is required");
     } else if (!/^[a-zA-Z ]*$/.test(formData.name as string)) {
       setErrorValue("Name can only contain letters");
+      setInvalidName(true);
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email as string)) {
       setInvalidEmail(true);
       setErrorValue("The email is invalid");
@@ -93,7 +94,7 @@ export default function Register() {
             />
           </button>
           <Link
-            className="text-2xl bg-pink-400 px-3 text-white rounded-md"
+            className="text-2xl bg-pink-400 px-3 py-1 text-white rounded-md  my-auto "
             href={"/"}
           >
             X

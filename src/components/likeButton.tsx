@@ -2,13 +2,14 @@
 import Image from "next/image";
 import { useGlobalContext } from "@/app/contexts/contextProvider";
 import { useSession } from "next-auth/react";
-import { redirect, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 export default function LikeButton({ id }: { id: string }) {
   // Getting user id
   const router = useRouter();
   const { hearts, addHeart, removeHeart } = useGlobalContext();
   const { status } = useSession();
+  console.log(status);
 
   const likeFlower = async (liked: boolean) => {
     await fetch("api/flowerLiked", {

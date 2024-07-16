@@ -1,11 +1,14 @@
 import { getToken } from "next-auth/jwt";
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/app/db";
+import { Prisma } from "@prisma/client";
 
 export async function POST(req: NextRequest) {
   const token = await getToken({ req });
   const body = await req.json();
+
   const { flowerId, flowerLiked } = body;
+
   if (token) {
     const tokenValues = JSON.stringify(token, null, 2);
     const userId = JSON.parse(tokenValues).accessToken;
@@ -31,6 +34,7 @@ export async function GET(req: NextRequest) {
   if (token) {
     const tokenValues = JSON.stringify(token, null, 2);
     const userId = JSON.parse(tokenValues).accessToken;
+    console.log("user id: ", userId);
     const flowerLiked = await prisma.user.findFirst({
       where: { id: userId },
       select: { flowersLiked: { select: { id: true } } },

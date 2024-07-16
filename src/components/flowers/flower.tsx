@@ -1,10 +1,15 @@
+"use client";
 import Image from "next/image";
-import { FlowerInfo } from "."; // from index
+import { Prisma } from "prisma/prisma-client";
 import LikeButton from "../likeButton";
 
 export default function Flower(Info: FlowerInfo) {
   const onSale = Number(Info.salePrice) < 0.5;
-
+  // * We are able to get if we are liked from preview.flowers.users
+  // * Problem is nav
+  // if (Info.users) {
+  //   console.log(Info.users[0].id);
+  // }
   return (
     <div className="text-center">
       <div className="relative w-72 h-40 bg-gray-300 overflow-hidden  rounded-xl">
@@ -15,9 +20,8 @@ export default function Flower(Info: FlowerInfo) {
             ".jpg"
           }
           alt={Info.alt}
-          fill
-          // We don't know the breakpoints yet
-          sizes="25vw"
+          width={288}
+          height={160}
           style={{ objectFit: "cover" }}
         />
       </div>
@@ -43,7 +47,7 @@ export default function Flower(Info: FlowerInfo) {
           {/* <p>{Info.id.toString()}</p> */}
         </div>
 
-        <LikeButton id={Info.id} />
+        <LikeButton id={Info.id!} />
       </div>
     </div>
   );
