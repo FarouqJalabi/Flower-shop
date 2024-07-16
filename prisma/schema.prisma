@@ -23,9 +23,10 @@ model FlowerPreviews {
 }
 
 model Flower {
-  id        String  @id @default(cuid())
-  title     String
-  imgUrl    String?
+  id     String  @id @default(cuid())
+  title  String
+  imgUrl String? //Just use  
+
   alt       String?
   salePrice Float?
   price     Float

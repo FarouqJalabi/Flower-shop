@@ -3,14 +3,18 @@ import { FlowerInfo } from "."; // from index
 import LikeButton from "../likeButton";
 
 export default function Flower(Info: FlowerInfo) {
-  const onSale = Info.salePrice == null;
+  const onSale = Number(Info.salePrice) < 0.5;
 
   return (
     <div className="text-center">
       <div className="relative w-72 h-40 bg-gray-300 overflow-hidden  rounded-xl">
         <Image
-          src={Info.imgUrl ? Info.imgUrl : "/test.jpg"}
-          alt={"Yellow flower"}
+          src={
+            "https://eljnfbtxmeteozramfkt.supabase.co/storage/v1/object/public/flower_images/" +
+            Info.id +
+            ".jpg"
+          }
+          alt={Info.alt}
           fill
           // We don't know the breakpoints yet
           sizes="25vw"
@@ -24,7 +28,7 @@ export default function Flower(Info: FlowerInfo) {
       >
         SALE
       </div>
-      <div className="flex px-2">
+      <div className="flex px-2 mt-2">
         <div className="text-left">
           <h1 className="font-jua text-xl">{Info.title}</h1>
           <div className="flex flex-wrap gap-2">

@@ -32,19 +32,19 @@ type Props = {
 export const GlobalContextProvider = ({ children }: Props) => {
   const [hearts, setHearts] = useState<Set<string>>(new Set([]));
 
-  // useEffect(() => {
-  //   fetch("api/flowerLiked", {
-  //     method: "GET",
-  //   })
-  //     .then((res) => res.json())
-  //     .then((flowers) => {
-  //       //Shouldn't be any
-  //       if (flowers != 401) {
-  //         const flower_id = flowers.flowersLiked.map((x: any) => x["id"]);
-  //         setHearts(new Set(flower_id));
-  //       }
-  //     });
-  // }, []);
+  useEffect(() => {
+    fetch("api/flowerLiked", {
+      method: "GET",
+    })
+      .then((res) => res.json())
+      .then((flowers) => {
+        //Shouldn't be any
+        if (flowers != 401) {
+          const flower_id = flowers.flowersLiked.map((x: any) => x["id"]);
+          setHearts(new Set(flower_id));
+        }
+      });
+  }, []);
 
   const addHeart = (flower_id: string) => {
     let updated_hearts = new Set(hearts);

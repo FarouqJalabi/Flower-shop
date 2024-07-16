@@ -1,65 +1,112 @@
 "use client";
-import Flower from "./flower";
-import { FlowerInfo } from ".";
-import Image from "next/image";
-import Link from "next/link";
-import { useState } from "react";
+import React, { useState, createRef } from "react";
+import FlowerEdit from "./flowerEdit";
 
-let example_info: FlowerInfo = {
-  id: "0",
-  title: "Anemone",
-  alt: "The white flower Anemone",
-  price: "49.99",
-};
-
-export default function FlowersPreview() {
-  // amount of times scrolled
-  let [scrolled, setScrolled] = useState(0);
-  // how many flowers that is shown at once
-  let [size, setSize] = useState(3);
-  let collectionId: Array<any> = [];
-
+import { createClient } from "@supabase/supabase-js";
+export default function FlowersPreviewEdit() {
+  let [flowersCount, setFlowerCount] = useState(3);
+  let flowerRef = createRef<HTMLDivElement>();
+  const supabase = createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL as string,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY as string
+  );
   return (
     <>
       <h1 className="font-jua text-3xl">Create a new Flower Preview</h1>
-      <form
-        onSubmit={async (e) => {
-          e.preventDefault();
-          console.log("Sent from adminEditor");
-          let formData = new FormData(e.currentTarget);
+      <div className="flex flex-wrap gap-4 m-4" ref={flowerRef}>
+        <form
+          onSubmit={async (e) => {
+            e.preventDefault();
+            console.log("Sent from adminEditor");
+            let formObject = new FormData(e.currentTarget);
+            let formData = Object.fromEntries(formObject);
 
-          await fetch("api/post", {
-            method: "POST",
-            body: JSON.stringify({
-              formData: Object.fromEntries(formData),
-              flowerData: "flowerDATATA",
-            }),
-          });
-        }}
-        className="m-5 flex"
-      >
-        <div className="flex flex-col gap-3">
-          <input
-            type="text"
-            name="title"
-            placeholder="Title"
-            className="text-2xl font-extrabold border-2 border-black p-2"
-          />
-          <input
-            type="text"
-            name="underTitle"
-            placeholder="underTitle"
-            className="text-lg border-2 border-black p-2"
-          />
+            let flowersElement = Array.from(
+              flowerRef.current?.getElementsByClassName(
+                "flowerEdit"
+              ) as HTMLCollectionOf<HTMLFormElement>
+            );
 
+            let flowersData = flowersElement.map((f) => {
+              let fData = new FormData(f);
+              return Object.fromEntries(fData);
+            });
+
+            const post_res = await fetch("api/post", {
+              method: "POST",
+              body: JSON.stringify({
+                formData: formData,
+                flowersData: flowersData,
+              }),
+            })
+              .then((response) => response.json())
+              .then(async (res) => {
+                res.forEach(async (id: string, i: number) => {
+                  const { data, error } = await supabase.storage
+                    .from("flower_images")
+                    .upload(id + ".jpg", flowersData[i].img, {
+                      cacheControl: "3600",
+                      upsert: false,
+                    });
+                });
+              });
+            console.log("Everything should be uploaded!");
+          }}
+          className="flex"
+        >
+          <div className="flex flex-col gap-3">
+            <input
+              type="text"
+              name="title"
+              placeholder="Title"
+              className="text-2xl font-extrabold border-2 border-black p-2"
+            />
+            <input
+              type="text"
+              name="underTitle"
+              placeholder="underTitle"
+              className="text-lg border-2 border-black p-2"
+            />
+
+            <button
+              type="submit"
+              className="bg-black text-white text-xl rounded-lg p-2"
+            >
+              Post
+            </button>
+            <button
+              type="submit"
+              className="bg-black text-white text-xl rounded-lg p-2"
+              onClick={async () => {
+                console.log("Sent to revalidate");
+                await fetch("api/post", {
+                  method: "POST",
+                  body: JSON.stringify({}),
+                });
+              }}
+            >
+              Revalidate page
+            </button>
+          </div>
+        </form>
+        {Array.from(Array(flowersCount)).map(() => {
+          return <FlowerEdit />;
+        })}
+        <div className="flex gap-2">
           <button
-            type="submit"
-            className="bg-black text-white text-xl rounded-lg p-2"
+            className="bg-black text-white text-3xl font-extrabold rounded-full p-2 my-auto aspect-square w-14 "
+            onClick={() => setFlowerCount(flowersCount + 1)}
           >
-            Post
+            +
+          </button>
+          <button
+            className="bg-black text-white text-3xl font-extrabold rounded-full p-2 my-auto aspect-square w-14 "
+            onClick={() => setFlowerCount(flowersCount - 1)}
+          >
+            -
           </button>
         </div>
-      </form>
+      </div>
     </>
   );
 }
