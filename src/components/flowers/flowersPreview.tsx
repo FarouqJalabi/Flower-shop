@@ -106,13 +106,13 @@ export default function FlowersPreview({
       </div>
       <div className="relative">
         <div
-          className={`flex gap-8 pt-3 overflow-x-scroll relative bg-${color}-300 `}
+          className={`flex gap-4  sm:gap-8 pt-3 overflow-x-scroll relative bg-${color}-300 `}
         >
-          <div className="pl-12 scrollTo"></div>
+          <div className="sm:pl-12 scrollTo"></div>
           {collectionId.map((v, i) => {
             return <Flower Info={v} key={v.id} scrollIndex={i} />;
           })}
-          <div className="pl-12 scrollTo"></div>
+          <div className="sm:pl-12 scrollTo"></div>
         </div>
         <button
           className="absolute top-1/2 -translate-y-1/2 -scale-x-100 mx-4 max-sm:hidden "
