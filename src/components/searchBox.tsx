@@ -22,7 +22,6 @@ export default function SearchBox({ initSearch }: prop) {
         name="search"
         className="border-gray-600 border-2 p-2 border-e-0 rounded-s-md w-full  focus:outline-none"
         placeholder="Search..."
-        // value={initSearch}
         defaultValue={initSearch}
       />
       <Link
@@ -32,9 +31,6 @@ export default function SearchBox({ initSearch }: prop) {
       >
         Search
       </Link>
-      {/* <button className="bg-black text-white p-2.5 rounded-e-md" type="submit"> */}
-      {/* Search */}
-      {/* </button> */}
     </form>
   );
 }
