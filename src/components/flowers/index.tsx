@@ -13,9 +13,9 @@ export default function Flowers() {
   return (
     <section className="grid grid-cols-4 gap-8">
       {/* <Flower info={example_info} />, we want the value not variable */}
-      {example_ids.map((v) => {
+      {example_ids.map((v, i) => {
         example_info.id = v.toString();
-        return <Flower {...example_info} key={v} />;
+        return <Flower Info={example_info} key={v} scrollIndex={i} />;
       })}
     </section>
   );

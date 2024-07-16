@@ -1,13 +1,39 @@
 import Flower from "@/components/flowers/flower";
 import { prisma } from "../../db";
-import { redirect } from "next/navigation";
 import Link from "next/link";
+import SearchBox from "@/components/searchBox";
+
+import { getServerSession } from "next-auth";
+import { options } from "@/app/api/auth/[...nextauth]/options";
 type props = {
   params: { page: string | number | null };
+  searchParams?: {
+    search?: string;
+  };
 };
 
-export default async function searchPage({ params }: props) {
-  const flowersCount = await prisma.flower.count();
+export default async function searchPage({ params, searchParams }: props) {
+  const data = await getServerSession(options);
+
+  const searchWhere =
+    searchParams && searchParams.search
+      ? {
+          OR: [
+            {
+              title: { search: searchParams.search },
+            },
+            {
+              description: { search: searchParams.search },
+            },
+            {
+              tags: { some: { tag: { search: searchParams.search } } },
+            },
+          ],
+        }
+      : {};
+  const flowersCount = await prisma.flower.count({
+    where: searchWhere,
+  });
   const flowersPerPage = 3;
 
   const pages = Math.ceil(flowersCount / flowersPerPage);
@@ -15,32 +41,39 @@ export default async function searchPage({ params }: props) {
     isNaN(Number(params.page)) ||
     !(Number(params.page) >= 1 && Number(params.page) < pages + 1)
   ) {
-    return redirect("/404");
+    console.log("Should go to ", "/search/1?search=" + searchParams?.search);
+    // return redirect("/search/1?search=" + searchParams?.search);
   }
   const results = await prisma.flower.findMany({
     skip: flowersPerPage * (Number(params.page) - 1),
     take: flowersPerPage,
-  });
+    where: searchWhere,
 
+    include:
+      data == null
+        ? undefined
+        : {
+            users: {
+              where: { id: data?.accessToken },
+              select: { id: true },
+            },
+          },
+    orderBy: {
+      _relevance: {
+        fields: ["title", "description"],
+        search: searchParams?.search!,
+        sort: "desc",
+      },
+    },
+  });
   return (
     <main>
       {/* Form alows enter to be clicked instead of button */}
-      <form className="mx-auto m-2 w-4/5 max-w-2xl flex">
-        <input
-          type="text"
-          className="border-gray-600 border-2 p-2 border-e-0 rounded-s-md w-full  focus:outline-none"
-          placeholder="Search..."
-        />
-        <button
-          className="bg-black text-white p-2.5 rounded-e-md"
-          type="submit"
-        >
-          Search
-        </button>
-      </form>
+      <SearchBox initSearch={searchParams?.search} />
+
       <section className=" grid grid-cols-1 sm:grid-cols-2 min-[890px]:grid-cols-3 gap-y-2 justify-items-center">
-        {results.map((flower) => {
-          return <Flower key={flower.id} {...flower} />;
+        {results.map((flower, i) => {
+          return <Flower key={flower.id} Info={flower} scrollIndex={i} />;
         })}
       </section>
       <section className="flex justify-center">
@@ -48,7 +81,13 @@ export default async function searchPage({ params }: props) {
           className={`text-4xl sm:text-6xl font-black p-3 -scale-x-100 w-min ${
             params.page == 1 ? "invisible" : ""
           }`}
-          href={"/search/" + (Number(params.page) - 1)}
+          href={
+            "/search/" +
+            (Number(params.page) - 1) +
+            "?search=" +
+            searchParams?.search!
+          }
+          prefetch
         >
           ➜
         </Link>
@@ -57,7 +96,13 @@ export default async function searchPage({ params }: props) {
             params.page == pages ? "invisible" : ""
           }
         `}
-          href={"/search/" + (Number(params.page) + 1)}
+          href={
+            "/search/" +
+            (Number(params.page) + 1) +
+            "?search=" +
+            searchParams?.search!
+          }
+          prefetch
         >
           ➜
         </Link>

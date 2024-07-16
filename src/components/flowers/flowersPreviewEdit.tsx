@@ -185,6 +185,7 @@ export default function FlowersPreviewEdit({ tags }: props) {
                 Upload Image
               </label>
               <img
+                alt="Preview of image you put in"
                 src={imgPreview}
                 className={`w-full h-full absolute pointer-events-none ${
                   imgPreview == "" ? "hidden" : ""

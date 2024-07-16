@@ -15,13 +15,12 @@ export default function Heart({ initLikes = 0 }: props) {
   const updateHeart = (e: CustomEventInit) => {
     setLiked(liked + e.detail.v);
   };
-
   useEffect(() => {
     window.addEventListener("customEvent_updateHeart", updateHeart);
     return () => {
       window.removeEventListener("customEvent_updateHeart", updateHeart);
     };
-  }, [liked, updateHeart]);
+  }, [liked]);
 
   return (
     <Link
