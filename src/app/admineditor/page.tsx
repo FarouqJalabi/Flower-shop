@@ -1,10 +1,6 @@
-import Hero from "../components/hero";
+import Hero from "@//components/hero";
 import FlowersPreview from "@/components/flowers/flowersPreview";
 import { PrismaClient } from "@prisma/client";
-
-import { getServerSession } from "next-auth";
-import { NextAuthOptions } from "next-auth";
-import { options } from "@/app/api/auth/[...nextauth]/options";
 
 const prisma = new PrismaClient();
 export default async function Home() {
@@ -14,8 +10,8 @@ export default async function Home() {
 
   return (
     <main>
-      <Hero />
-      {flowerPreviews.map(async (v) => {
+      <h1>Hello admin</h1>
+      {/* {flowerPreviews.map(async (v) => {
         const flowers = await prisma.flower.findMany({
           where: { flowerPreviewId: v.id },
         });
@@ -28,7 +24,7 @@ export default async function Home() {
             collectionId={flowers}
           />
         );
-      })}
+      })} */}
     </main>
   );
 }
