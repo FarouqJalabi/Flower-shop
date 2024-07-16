@@ -1,6 +1,6 @@
 import { useState, FormEvent } from "react";
 import { createClient } from "@supabase/supabase-js";
-
+import Image from "next/image";
 interface props {
   tags: Array<string>;
   standAlone?: boolean;
@@ -8,6 +8,7 @@ interface props {
 
 export default function FlowerEdit({ tags, standAlone = false }: props) {
   const [loadingStatus, setLoadingStatus] = useState("");
+  const [imgPreview, setImgPreview] = useState("");
   const supabase = createClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL as string,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY as string
@@ -74,50 +75,73 @@ export default function FlowerEdit({ tags, standAlone = false }: props) {
   };
   return (
     <form
-      className="flex flex-col gap-2 w-64 flowerEdit"
+      className="flex flex-col gap-2 w-52 sm:w-72 flowerEdit"
       onSubmit={handle_form}
     >
+      <div className="relative w-52 h-28 sm:w-72 sm:h-40 bg-gray-300 overflow-hidden rounded-xl flex">
+        <input
+          type="file"
+          name="img"
+          accept="image/*"
+          className="text-xl p-2 top-0 bottom-0 my-auto z-10"
+          onChange={(e) => {
+            let target = e.target;
+            let files = target.files;
+            if (FileReader && files && files.length) {
+              var fr = new FileReader();
+              fr.onload = () => {
+                setImgPreview(fr.result as string);
+              };
+              fr.readAsDataURL(files[0]);
+            } else {
+              setImgPreview("");
+            }
+          }}
+        />
+        <img
+          src={imgPreview}
+          className={`w-full h-full absolute pointer-events-none ${
+            imgPreview == "" ? "hidden" : ""
+          }`}
+        />
+      </div>
       <input
         type="text"
         name="title"
         placeholder="Title"
-        className="text-xl border-2 border-black p-2"
+        className="bg-gray-200 focus:border-none focus:outline-none p-2 rounded-md text-2xl font-jua"
       />
-      <input
-        type="file"
-        name="img"
-        className="text-xl border-2 border-black p-2"
-      />
-
       <input
         type="text"
         name="alt"
         placeholder="alt text"
-        className="text-xl border-2 border-black p-2"
+        className="bg-gray-200 focus:border-none focus:outline-none p-2 rounded-md text-base"
       />
       <textarea
         rows={3}
         name="description"
         placeholder="Description"
-        className="text-xl border-2 border-black p-2"
+        className="bg-gray-200 focus:border-none focus:outline-none p-2 rounded-md text-base"
       />
-      <input
-        type="number"
-        name="price"
-        id="price"
-        min={0}
-        step="0.01"
-        placeholder="Price"
-        className="text-xl border-2 border-black p-2"
-      />
-      <input
-        type="number"
-        step="0.01"
-        name="salePrice"
-        placeholder="Sale price"
-        min={0}
-        className="text-xl border-2 border-black p-2"
-      />
+      <div className="flex gap-2 w-full ">
+        <input
+          type="number"
+          name="price"
+          id="price"
+          min={0}
+          step="0.01"
+          placeholder="Price"
+          className="bg-gray-200 focus:border-none focus:outline-none p-2 rounded-md  w-1/2"
+        />
+        <input
+          type="number"
+          step="0.01"
+          name="salePrice"
+          placeholder="Sale price?"
+          min={0}
+          className="bg-gray-200 focus:border-none focus:outline-none p-2 rounded-md  w-1/2"
+        />
+      </div>
       <div className="flex flex-col">
         {tags.map((v: string) => {
           return (
