@@ -47,7 +47,7 @@ export default function TagEdit({ tags }: props) {
         <p>{loadingStatus} </p>
       </form>
       <div className="bg-gray-400 w-1 h-28 rounded-full mt-8 mx-5"></div>
-      <div className="grid grid-rows-2 grid-flow-col gap-2 pt-6 items-center ">
+      <div className="grid grid-rows-2 grid-flow-col gap-2 pt-6 items-center overflow-x-auto w-full overflow-y-hidden">
         {tags.map((tag) => {
           return (
             <div key={tag} className="flex gap-2 h-10 items-center">
