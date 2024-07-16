@@ -95,7 +95,6 @@ export default function FlowersPreviewEdit({ tags }: props) {
     }
 
     setLoadingStatus("Posting form data...");
-    return;
 
     await fetch("api/post", {
       method: "POST",
