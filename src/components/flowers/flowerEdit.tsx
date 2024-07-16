@@ -4,9 +4,16 @@ import Image from "next/image";
 interface props {
   tags: Array<string>;
   standAlone?: boolean;
+  flowerKey?: number;
+  removeFlower?: (flowerKeu: number) => void;
 }
 
-export default function FlowerEdit({ tags, standAlone = false }: props) {
+export default function FlowerEdit({
+  tags,
+  standAlone = false,
+  flowerKey,
+  removeFlower,
+}: props) {
   const [loadingStatus, setLoadingStatus] = useState("");
   const [imgPreview, setImgPreview] = useState("");
   const supabase = createClient(
@@ -15,6 +22,8 @@ export default function FlowerEdit({ tags, standAlone = false }: props) {
   );
   const handle_form = async (e: FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault();
+
+    if (!standAlone) return;
     let formObject = new FormData(e.currentTarget as HTMLFormElement);
     let formData = Object.fromEntries(formObject) as Record<string, any>;
 
@@ -78,12 +87,13 @@ export default function FlowerEdit({ tags, standAlone = false }: props) {
       className="flex flex-col gap-2 w-52 sm:w-72 flowerEdit"
       onSubmit={handle_form}
     >
-      <div className="relative w-52 h-28 sm:w-72 sm:h-40 bg-gray-300 overflow-hidden rounded-xl flex">
+      <div className="relative w-52 h-28 sm:w-72 sm:h-40 bg-gray-200 overflow-hidden rounded-xl flex items-center justify-center">
         <input
           type="file"
           name="img"
           accept="image/*"
-          className="text-xl p-2 top-0 bottom-0 my-auto z-10"
+          className="text-xl p-2 top-0 bottom-0 my-auto z-10 hidden"
+          id={"inputFile" + flowerKey}
           onChange={(e) => {
             let target = e.target;
             let files = target.files;
@@ -98,6 +108,12 @@ export default function FlowerEdit({ tags, standAlone = false }: props) {
             }
           }}
         />
+        <label
+          htmlFor={"inputFile" + flowerKey}
+          className="bg-gray-200 h-min text-base p-2 rounded-lg z-20 cursor-pointer"
+        >
+          Upload Image
+        </label>
         <img
           src={imgPreview}
           className={`w-full h-full absolute pointer-events-none ${
@@ -107,16 +123,35 @@ export default function FlowerEdit({ tags, standAlone = false }: props) {
       </div>
       <input
         type="text"
-        name="title"
-        placeholder="Title"
-        className="bg-gray-200 focus:border-none focus:outline-none p-2 rounded-md text-2xl font-jua"
-      />
-      <input
-        type="text"
         name="alt"
         placeholder="alt text"
         className="bg-gray-200 focus:border-none focus:outline-none p-2 rounded-md text-base"
       />
+      <div className="flex items-center gap-2">
+        <input
+          type="text"
+          name="title"
+          placeholder="Title"
+          className="bg-gray-200 focus:border-none focus:outline-none p-2 rounded-md text-2xl font-jua w-3/4"
+        />
+        <button
+          type="submit"
+          className={`relative bg-red-500 w-10 aspect-square rounded-full ${
+            standAlone ? "hidden" : ""
+          }`}
+          onClick={() => {
+            // console.log("delete", flowerKey);
+            removeFlower?.(flowerKey!);
+          }}
+        >
+          <Image
+            src={"/trash.svg"}
+            alt={"A trash icon"}
+            fill
+            className="p-2 object-cover"
+          />
+        </button>
+      </div>
       <textarea
         rows={3}
         name="description"
@@ -146,8 +181,8 @@ export default function FlowerEdit({ tags, standAlone = false }: props) {
         {tags.map((v: string) => {
           return (
             <div key={v}>
-              <input type="checkbox" name={`tag${v}`} id={v} />
-              <label htmlFor={v}>{v}</label>
+              <input type="checkbox" name={`tag${v}`} id={v + flowerKey} />
+              <label htmlFor={v + flowerKey}>{v}</label>
             </div>
           );
         })}

@@ -43,8 +43,8 @@ export default async function CartItems() {
         }`}
       >
         <p>
-          It appears you don&apos;t have any flowers in you&apos;re cart. If you do
-          try to refresh!
+          It appears you don&apos;t have any flowers in you&apos;re cart. If you
+          do try to refresh!
         </p>
 
         <Link href="/" className="underline text-blue-500 ml-auto my-auto ">
