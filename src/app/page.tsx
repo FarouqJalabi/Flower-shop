@@ -7,6 +7,7 @@ import { options } from "@/app/api/auth/[...nextauth]/options";
 
 export default async function Home() {
   const data = await getServerSession(options);
+  console.log(data, "sessions  ");
   let flowerPreviews = await prisma.flowerPreviews.findMany({
     orderBy: [
       {

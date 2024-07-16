@@ -3,8 +3,6 @@ import Image from "next/image";
 import { useState } from "react";
 import { signIn } from "next-auth/react";
 import Link from "next/link";
-import { useSession } from "next-auth/react";
-
 import { FormEvent } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
@@ -13,10 +11,6 @@ export default function Register() {
 
   const searchParams = useSearchParams();
   const callback_url = searchParams.get("callback") || "/";
-  const { status } = useSession();
-  if (status == "authenticated") {
-    route.push("/signout");
-  }
 
   const [invalidEmail, setInvalidEmail] = useState(false);
   const [invalidPassword, setInvalidPassword] = useState(false);

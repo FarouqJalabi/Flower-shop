@@ -1,7 +1,6 @@
 "use client";
 import { signOut } from "next-auth/react";
 import Link from "next/link";
-import { useSession } from "next-auth/react";
 import { redirect } from "next/navigation";
 import { useSearchParams } from "next/navigation";
 import { useState } from "react";
@@ -11,11 +10,6 @@ export default function SignOut() {
   const [loadingStatus, setLoadingStatus] = useState("");
 
   const callback_url = searchParams.get("callback") || "/";
-  const { status } = useSession();
-
-  if (status == "unauthenticated") {
-    redirect("/login");
-  }
 
   return (
     <>
