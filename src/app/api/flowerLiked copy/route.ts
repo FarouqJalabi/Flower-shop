@@ -26,3 +26,22 @@ export async function POST(req: NextRequest) {
   }
   new Response("401");
 }
+
+export async function GET(req: NextRequest) {
+  const token = await getToken({ req });
+
+  if (token) {
+    const tokenValues = JSON.stringify(token, null, 2);
+    const userId = JSON.parse(tokenValues).accessToken;
+
+    const flowerLiked = await prisma.user.findFirst({
+      where: { id: userId },
+      select: { flowersLiked: { select: { id: true } } },
+    });
+
+    if (flowerLiked) {
+      return new Response(JSON.stringify(flowerLiked));
+    }
+  }
+  return new Response("401");
+}

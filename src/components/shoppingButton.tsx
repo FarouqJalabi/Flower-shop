@@ -1,5 +1,4 @@
 "use client";
-import Image from "next/image";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -15,26 +14,24 @@ export default function ShoppingButton({
   const { status } = useSession();
   const [inCart, setInCart] = useState(user.length == 0);
 
-  // const removeHeart = new Event("customEvent_removeHeart");
-  // const addHeart = new Event("customEvent_addHeart");
+  const removeCart = new Event("customEvent_removeCart");
+  const addCart = new Event("customEvent_addCart");
 
-  const likeFlower = async (liked: boolean) => {
-    await fetch("api/flowerLiked", {
-      method: "POST",
-      body: JSON.stringify({
-        flowerLiked: liked,
-        flowerId: id,
-      }),
-    });
-  };
   return (
     <button
       className="bg-black text-white font-jua text-3xl p-2 rounded-2xl w-full"
       onClick={() => {
         if (status === "authenticated") {
           setInCart(!inCart);
-          // likeFlower(!liked);
-          // dispatchEvent(!liked ? addHeart : removeHeart);
+          fetch("/api/shoppingList", {
+            method: "POST",
+            body: JSON.stringify({
+              addToList: inCart,
+              flowerId: id,
+            }),
+          });
+
+          dispatchEvent(inCart ? addCart : removeCart);
         } else {
           router.push("/login");
         }

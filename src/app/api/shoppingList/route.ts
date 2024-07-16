@@ -6,16 +6,18 @@ export async function POST(req: NextRequest) {
   const token = await getToken({ req });
   const body = await req.json();
 
-  const { flowerId, flowerLiked } = body;
+  const { flowerId, addToList } = body;
+  console.log("Flower Id: ", flowerId);
+  console.log("Add to list?: ", addToList);
 
-  if (token) {
+  if (token ) {
     const tokenValues = JSON.stringify(token, null, 2);
     const userId = JSON.parse(tokenValues).accessToken;
 
     const res = await prisma.user.update({
       where: { id: userId },
       data: {
-        flowersLiked: flowerLiked
+        shoppingList: addToList
           ? { connect: { id: flowerId } }
           : { disconnect: { id: flowerId } },
       },

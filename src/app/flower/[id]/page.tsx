@@ -5,6 +5,7 @@ import ShoppingButton from "@/components/shoppingButton";
 
 import { getServerSession } from "next-auth";
 import { options } from "@/app/api/auth/[...nextauth]/options";
+import LikeButton from "@/components/likeButton";
 
 export default async function Page(props: any) {
   const data = await getServerSession(options);
@@ -14,6 +15,10 @@ export default async function Page(props: any) {
     include: {
       tags: true,
       shoppingList: {
+        where: { id: data?.accessToken },
+        select: { id: true },
+      },
+      users: {
         where: { id: data?.accessToken },
         select: { id: true },
       },
@@ -41,7 +46,10 @@ export default async function Page(props: any) {
         <h2 className="text-2xl">{Info.price}</h2>
         <p>{Info.description}</p>
         <div className="mt-auto">
-          <ShoppingButton id={Info.id} user={Info.shoppingList} />
+          <div className="flex gap-2">
+            <ShoppingButton id={Info.id} user={Info.shoppingList} />
+            <LikeButton id={Info.id} user={Info.users} big={true} />
+          </div>
           <div className="flex gap-2 my-2">
             {Info.tags.map((v) => {
               return <p className="bg-gray-300 p-2 rounded-xl ">{v.tag}</p>;
