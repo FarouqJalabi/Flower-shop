@@ -7,18 +7,19 @@ import { options } from "@/app/api/auth/[...nextauth]/options";
 
 export default async function Home() {
   const data = await getServerSession(options);
-  if (data != null) {
-  }
   let flowerPreviews = await prisma.flowerPreviews.findMany({
     include: {
-      flowers: {
-        include: {
-          users: {
-            where: { id: data?.accessToken },
-            select: { id: true },
-          },
-        },
-      },
+      flowers:
+        data == null
+          ? true
+          : {
+              include: {
+                users: {
+                  where: { id: data?.accessToken },
+                  select: { id: true },
+                },
+              },
+            },
     },
   });
 

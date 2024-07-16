@@ -1,6 +1,5 @@
 "use client";
 import Image from "next/image";
-import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
@@ -9,12 +8,12 @@ export default function LikeButton({
   user,
 }: {
   id: string;
-  user: Array<any>;
+  user?: Array<{ id: string }>;
 }) {
   // Getting user id
   const router = useRouter();
-  const { status } = useSession();
-  const [liked, setLiked] = useState(user.length != 0);
+  // const { status } = useSession();
+  const [liked, setLiked] = useState(user ? user.length != 0 : false);
 
   const removeHeart = new Event("customEvent_removeHeart");
   const addHeart = new Event("customEvent_addHeart");
@@ -32,7 +31,8 @@ export default function LikeButton({
     <button
       className="relative ml-auto my-auto w-10 aspect-square z-10"
       onClick={() => {
-        if (status === "authenticated") {
+        // if (status === "authenticated") {
+        if (user) {
           likeFlower(!liked);
           setLiked(!liked);
           dispatchEvent(!liked ? addHeart : removeHeart);

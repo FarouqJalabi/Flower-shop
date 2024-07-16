@@ -9,6 +9,7 @@ export default function SignOut() {
   if (status == "unauthenticated") {
     redirect("/login");
   }
+
   return (
     <div className="flex bg-gray-400 w-full h-full fixed left-0 top-0 z-20 items-center justify-center ">
       <section className="flex flex-col gap-4 bg-white p-8 h-min rounded-2xl w-56">
