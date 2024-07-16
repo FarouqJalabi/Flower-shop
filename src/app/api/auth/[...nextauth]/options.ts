@@ -9,8 +9,8 @@ export const options: NextAuthOptions = {
     strategy: "jwt",
   },
   pages: {
-    signIn: "/?login",
-    signOut: "/?signOut",
+    signIn: "/login",
+    signOut: "/signout",
     // error: '/auth/error', // Error code passed in query string as ?error=
   },
   providers: [
