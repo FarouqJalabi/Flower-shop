@@ -2,10 +2,18 @@ import Image from "next/image";
 import LikeButton from "../likeButton";
 import Link from "next/link";
 
-export default function Flower(Info: FlowerInfo) {
+interface props {
+  Info: FlowerInfo;
+  scrollIndex: number;
+}
+export default function Flower({ Info, scrollIndex }: props) {
   const onSale = Number(Info.salePrice) < 0.5;
   return (
-    <div className="text-center max-w-min">
+    <div className="text-center max-w-min scroll-m-5 relative">
+      <div
+        className="absolute scrollTo top-1/2 -translate-x-1/2 w-1 h-1 bg-red-600"
+        data-scroll-index={scrollIndex}
+      ></div>
       <Link href={`/flower/${Info.id}`}>
         <div className="relative w-52 h-28 sm:w-72 sm:h-40 bg-gray-300 overflow-hidden rounded-xl">
           <Image

@@ -45,7 +45,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`${inter.className} ${jua.variable} overflow-x-hidden`}>
+      <body className={`${inter.className} ${jua.variable} `}>
         <NextAuthProvider>
           <Nav />
           {children}

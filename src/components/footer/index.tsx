@@ -37,14 +37,14 @@ export default function Footer() {
             width={80}
             height={80}
             alt={"github logo in white"}
-            className="object-contain mx-0 inline-block "
+            className="object-contain mx-0 inline-block h-20 w-20"
           />
           <Image
             src={"/GitHub_Logo_White.png"}
             width={100}
             height={100}
             alt={"github word in white"}
-            className="object-contain inline-block"
+            className="object-contain inline-block "
           />
         </a>
       </div>
