@@ -1,77 +1,90 @@
 "use client";
-import React, { useState, createRef } from "react";
+import React, { useState, createRef, FormEvent } from "react";
 import FlowerEdit from "./flowerEdit";
-
 import { createClient } from "@supabase/supabase-js";
-export default function FlowersPreviewEdit() {
+
+interface props {
+  tags: Array<string>;
+}
+
+export default function FlowersPreviewEdit({ tags }: props) {
   let [flowersCount, setFlowerCount] = useState(1);
   let [loadingStatus, setLoadingStatus] = useState("");
+
   let flowerRef = createRef<HTMLDivElement>();
   const supabase = createClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL as string,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY as string
   );
 
+  const handle_form = async (e: FormEvent<HTMLFormElement>): Promise<void> => {
+    e.preventDefault();
+    let formObject = new FormData(e.currentTarget as HTMLFormElement);
+    let formData = Object.fromEntries(formObject);
+
+    if (formData.color == "NONE") {
+      delete formData.color;
+      delete formData.img;
+    }
+
+    let flowersElement = Array.from(
+      flowerRef.current?.getElementsByClassName(
+        "flowerEdit"
+      ) as HTMLCollectionOf<HTMLFormElement>
+    );
+
+    let flowersData = flowersElement.map((f) => {
+      let fData = new FormData(f);
+      let flower = Object.fromEntries(fData) as Record<string, any>;
+      const tagsList = Object.keys(flower).filter((v) => {
+        if (v.startsWith("tag")) {
+          delete flower[v];
+          return true;
+        }
+      });
+      flower.tags = {};
+      flower.tags.connect = tagsList.map((v) => {
+        return {
+          tag: v.substring(3),
+        };
+      });
+      return flower;
+    });
+    setLoadingStatus("Posting form data...");
+
+    await fetch("api/post", {
+      method: "POST",
+      body: JSON.stringify({
+        formData: formData,
+        flowersData: flowersData,
+      }),
+    })
+      .then((response) => response.json())
+      .then(async (res) => {
+        setLoadingStatus("Posting images...");
+        await res.flowersId.forEach(async (id: string, i: number) => {
+          const { data, error } = await supabase.storage
+            .from("flower_images")
+            .upload(id + ".jpg", flowersData[i].img, {
+              upsert: false,
+            });
+        });
+        if (formData.color != "NONE") {
+          const { data, error } = await supabase.storage
+            .from("preview_images")
+            .upload(res.previewId + ".jpg", formData.img, {
+              upsert: false,
+            });
+        }
+      });
+
+    setLoadingStatus("Done! Check out the main page for changes");
+  };
   return (
     <>
       <h1 className="font-jua text-3xl">Create a new Flower Preview</h1>
       <div className="flex flex-wrap gap-4 m-4" ref={flowerRef}>
-        <form
-          onSubmit={async (e) => {
-            e.preventDefault();
-            let formObject = new FormData(e.currentTarget as HTMLFormElement);
-            let formData = Object.fromEntries(formObject);
-
-            if (formData.color == "NONE") {
-              delete formData.color;
-              delete formData.img;
-            }
-
-            let flowersElement = Array.from(
-              flowerRef.current?.getElementsByClassName(
-                "flowerEdit"
-              ) as HTMLCollectionOf<HTMLFormElement>
-            );
-
-            let flowersData = flowersElement.map((f) => {
-              let fData = new FormData(f);
-              return Object.fromEntries(fData);
-            });
-
-            setLoadingStatus("Posting form data...");
-
-            await fetch("api/post", {
-              method: "POST",
-              body: JSON.stringify({
-                formData: formData,
-                flowersData: flowersData,
-              }),
-            })
-              .then((response) => response.json())
-              .then(async (res) => {
-                console.log(res);
-                setLoadingStatus("Posting images...");
-                await res.flowersId.forEach(async (id: string, i: number) => {
-                  const { data, error } = await supabase.storage
-                    .from("flower_images")
-                    .upload(id + ".jpg", flowersData[i].img, {
-                      upsert: false,
-                    });
-                });
-                if (formData.color != "NONE") {
-                  const { data, error } = await supabase.storage
-                    .from("preview_images")
-                    .upload(res.previewId + ".jpg", formData.img, {
-                      upsert: false,
-                    });
-                }
-                console.log("Should be sent up");
-              });
-
-            setLoadingStatus("Done! Check out the main page for changes");
-          }}
-          className="flex"
-        >
+        <form onSubmit={handle_form} className="flex">
           <div className="flex flex-col gap-3 text-center">
             <input
               type="text"
@@ -140,7 +153,7 @@ export default function FlowersPreviewEdit() {
           </div>
         </form>
         {Array.from(Array(flowersCount)).map((v) => {
-          return <FlowerEdit key={v} />;
+          return <FlowerEdit key={"2"} tags={tags} />;
         })}
         <div className="flex gap-2">
           <button

@@ -7,7 +7,7 @@ import { redirect } from "next/navigation";
 export default function SignOut() {
   const { status } = useSession();
   if (status == "unauthenticated") {
-    redirect("/");
+    redirect("/login");
   }
   return (
     <div className="flex bg-gray-400 w-full h-full fixed left-0 top-0 z-20 items-center justify-center ">

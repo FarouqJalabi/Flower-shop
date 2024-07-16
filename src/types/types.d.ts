@@ -19,6 +19,7 @@ declare global {
     flowersLiked?: Array<user>;
     shoppingList?: Array<user>;
     tags?: Array<string>;
+    users?: Array<{ id: string }>;
   }
 }
 export {};

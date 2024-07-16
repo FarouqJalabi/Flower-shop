@@ -13,7 +13,7 @@ export default function Register() {
 
   const { status } = useSession();
   if (status == "authenticated") {
-    route.push("/");
+    route.push("/signout");
   }
   const [invalidEmail, setInvalidEmail] = useState(false);
   const [invalidPassword, setInvalidPassword] = useState(false);
@@ -21,8 +21,6 @@ export default function Register() {
   const [invalidName, setInvalidName] = useState(false);
 
   const [errorValue, setErrorValue] = useState("");
-
-  console.log("WHy refershing!");
 
   const postUser = async (name: string, password: string, email: string) => {
     return await fetch("api/postUser", {

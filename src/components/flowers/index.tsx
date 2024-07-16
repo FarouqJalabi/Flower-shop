@@ -5,6 +5,7 @@ let example_info: FlowerInfo = {
   title: "Anemone",
   alt: "The white flower Anemone",
   price: 49.99,
+  description: "",
 };
 
 export default function Flowers() {

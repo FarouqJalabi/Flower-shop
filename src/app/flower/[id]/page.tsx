@@ -5,8 +5,8 @@ import Image from "next/image";
 export default async function Page(props: any) {
   const Info = await prisma.flower.findFirst({
     where: { id: props.params.id },
+    include: { tags: true },
   });
-  const tags = ["tag", "yellow", "easy to grow"];
   if (!Info) {
     return redirect("/404");
   }
@@ -34,8 +34,8 @@ export default async function Page(props: any) {
           </button>
 
           <div className="flex gap-2 my-2">
-            {tags.map((v) => {
-              return <p className="bg-gray-300 p-2 rounded-xl ">{v}</p>;
+            {Info.tags.map((v) => {
+              return <p className="bg-gray-300 p-2 rounded-xl ">{v.tag}</p>;
             })}
           </div>
         </div>

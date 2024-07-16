@@ -1,15 +1,23 @@
 "use client";
 import Image from "next/image";
-import { useGlobalContext } from "@/app/contexts/contextProvider";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 
-export default function LikeButton({ id }: { id: string }) {
+export default function LikeButton({
+  id,
+  user,
+}: {
+  id: string;
+  user: Array<any>;
+}) {
   // Getting user id
   const router = useRouter();
-  const { hearts, addHeart, removeHeart } = useGlobalContext();
   const { status } = useSession();
-  console.log(status);
+  const [liked, setLiked] = useState(user.length != 0);
+
+  const removeHeart = new Event("customEvent_removeHeart");
+  const addHeart = new Event("customEvent_addHeart");
 
   const likeFlower = async (liked: boolean) => {
     await fetch("api/flowerLiked", {
@@ -25,15 +33,16 @@ export default function LikeButton({ id }: { id: string }) {
       className="relative ml-auto my-auto w-10 aspect-square z-10"
       onClick={() => {
         if (status === "authenticated") {
-          hearts.has(id) ? removeHeart(id) : addHeart(id);
-          likeFlower(!hearts.has(id));
+          likeFlower(!liked);
+          setLiked(!liked);
+          dispatchEvent(!liked ? addHeart : removeHeart);
         } else {
           router.push("/login");
         }
       }}
     >
       <Image
-        src={hearts.has(id) ? "/heartFilled.svg" : "/heart.svg"}
+        src={liked ? "/heartFilled.svg" : "/heart.svg"}
         alt={"Heart, your liked flowers"}
         fill
         style={{ objectFit: "contain" }}
