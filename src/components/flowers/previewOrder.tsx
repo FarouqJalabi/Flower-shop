@@ -8,7 +8,7 @@ interface props {
 export default function PreviewOrder({ initPreviews }: props) {
   const [previews, setPreviews] = useState(initPreviews);
   return (
-    <div className="flex  gap-4 flex-wrap m-2">
+    <div className="flex gap-4 flex-wrap m-2">
       {previews.map((v) => {
         return (
           <div key={v.id} className="flex items-center gap-1">

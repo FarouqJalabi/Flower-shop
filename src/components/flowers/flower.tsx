@@ -17,7 +17,7 @@ export default function Flower(Info: FlowerInfo) {
             alt={Info.alt}
             width={288}
             height={160}
-            className="object-cover "
+            className="object-cover"
           />
         </div>
       </Link>

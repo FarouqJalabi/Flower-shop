@@ -1,5 +1,5 @@
 import { useState, FormEvent } from "react";
-import { createClient } from "@supabase/supabase-js";
+import { supabase } from "@/app/db/supabase";
 import Image from "next/image";
 interface props {
   tags: Array<string>;
@@ -16,10 +16,6 @@ export default function FlowerEdit({
 }: props) {
   const [loadingStatus, setLoadingStatus] = useState("");
   const [imgPreview, setImgPreview] = useState("");
-  const supabase = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL as string,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY as string
-  );
   const handle_form = async (e: FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault();
 
@@ -68,7 +64,10 @@ export default function FlowerEdit({
     });
     if (res.ok) {
       setLoadingStatus("Uploading image...");
-
+      if (!supabase) {
+        setLoadingStatus("Can't upload images :(");
+        return;
+      }
       const body = await res.json();
       const { data, error } = await supabase.storage
         .from("flower_images")

@@ -1,8 +1,7 @@
 "use client";
 import React, { useState, createRef, FormEvent } from "react";
 import FlowerEdit from "./flowerEdit";
-import { createClient } from "@supabase/supabase-js";
-
+import { supabase } from "@/app/db/supabase";
 interface props {
   tags: Array<string>;
 }
@@ -13,10 +12,6 @@ export default function FlowersPreviewEdit({ tags }: props) {
   const [imgPreview, setImgPreview] = useState("");
 
   let flowerRef = createRef<HTMLDivElement>();
-  const supabase = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL as string,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY as string
-  );
 
   const removeFlower = (flowerKey: number) => {
     const indexFlower = flowersCount.indexOf(flowerKey);

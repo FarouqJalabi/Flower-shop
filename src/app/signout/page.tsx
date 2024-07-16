@@ -12,6 +12,7 @@ export default function SignOut() {
 
   const callback_url = searchParams.get("callback") || "/";
   const { status } = useSession();
+
   if (status == "unauthenticated") {
     redirect("/login");
   }

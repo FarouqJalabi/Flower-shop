@@ -10,7 +10,6 @@ interface props {
 export default function User({ loggedIn }: props) {
   //Maybe get server session
   const pathName = usePathname();
-  console.log(pathName);
   return (
     <Link
       className="relative my-auto ml-auto w-10 sm:w-12 aspect-square"
