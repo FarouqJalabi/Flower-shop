@@ -4,8 +4,13 @@ import { useState } from "react";
 import { signIn } from "next-auth/react";
 
 import Link from "next/link";
-
+import { redirect } from "next/navigation";
+import { useSession } from "next-auth/react";
 export default function Register() {
+  const { status } = useSession();
+  if (status == "authenticated") {
+    redirect("/");
+  }
   const [invalidEmail, setInvalidEmail] = useState(false);
   const [invalidPassword, setInvalidPassword] = useState(false);
   const [invalidRePassword, setInvalidRePassword] = useState(false);
