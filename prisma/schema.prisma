@@ -1,0 +1,38 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  name         String
+  password     String
+  flowersLiked Flower[]
+}
+
+model FlowerPreviews {
+  id         String   @id @default(cuid())
+  title      String
+  underTitle String?
+  flowers    Flower[]
+}
+
+model Flower {
+  id        String  @id @default(cuid())
+  title     String
+  imgUrl    String?
+  alt       String?
+  salePrice Float?
+  price     Float
+
+  user   User?   @relation(fields: [userId], references: [id])
+  userId String?
+
+  flowerPreview   FlowerPreviews? @relation(fields: [flowerPreviewId], references: [id])
+  flowerPreviewId String?
+}
