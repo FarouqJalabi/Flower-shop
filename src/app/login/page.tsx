@@ -3,9 +3,11 @@ import Image from "next/image";
 import { useState } from "react";
 import { signIn } from "next-auth/react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export default function Login() {
   //Validations
+  const route = useRouter();
   const [invalidEmail, setInvalidEmail] = useState(false);
   const [invalidPassword, setInvalidPassword] = useState(false);
 
@@ -17,6 +19,9 @@ export default function Login() {
   const validLogin = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     //Valid email?
+
+    setInvalidEmail(false);
+    setInvalidPassword(false);
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailValue)) {
       setInvalidEmail(true);
       setErrorValue("The email is not valid");
@@ -29,13 +34,16 @@ export default function Login() {
 
       setErrorValue("Loging you in...");
       const res = await signIn("credentials", {
-        redirect: true,
-        callbackUrl: "/",
+        redirect: false,
         email: emailValue,
         password: passwordValue,
       });
       if (res?.error) {
         setErrorValue("Either the password or gmail is wrong");
+        setInvalidEmail(true);
+        setInvalidPassword(true);
+      } else {
+        route.push("/");
       }
     }
   };
