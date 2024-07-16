@@ -79,7 +79,6 @@ export const GlobalContextProvider = ({ children }: Props) => {
 
     console.log("Removed from cart, heart id:", flower_id);
   };
-
   return (
     <GlobalContext.Provider
       value={{ hearts, addHeart, removeHeart, cart, addCart, removeCart }}

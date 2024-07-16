@@ -10,9 +10,6 @@ export async function POST(req: NextRequest) {
     const tokenValues = JSON.stringify(token, null, 2);
     const userId = JSON.parse(tokenValues).accessToken;
 
-    console.log("Info got");
-    console.log(JSON.parse(tokenValues).accessToken);
-    console.log(JSON.parse(tokenValues));
     const res = await prisma.user.update({
       where: { id: userId },
       data: {

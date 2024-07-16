@@ -4,43 +4,47 @@ import { useState } from "react";
 import { signIn } from "next-auth/react";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
-import { redirect } from "next/navigation";
+import { FormEvent } from "react";
+import { useRouter } from "next/navigation";
 
-export default async function Login() {
+export default function Login() {
+  const route = useRouter();
   const { status } = useSession();
   if (status == "authenticated") {
-    redirect("/");
+    route.push("/");
   }
+
+  console.log("WHy refershing!");
   //Validations
   const [invalidEmail, setInvalidEmail] = useState(false);
   const [invalidPassword, setInvalidPassword] = useState(false);
 
-  const [emailValue, setEmailValue] = useState("");
-  const [passwordValue, setPasswordValue] = useState("");
-
   const [errorValue, setErrorValue] = useState("");
 
-  // console.log(await getProviders(), "Get providers");
-  const validLogin = async (e: React.MouseEvent<HTMLButtonElement>) => {
+  const validLogin = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    let formObject = new FormData(e.currentTarget);
+    let formData = Object.fromEntries(formObject);
+
+    console.log(formData);
     //Valid email?
 
     setInvalidEmail(false);
     setInvalidPassword(false);
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailValue)) {
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email as string)) {
       setInvalidEmail(true);
       setErrorValue("The email is not valid");
-    } else if (passwordValue.length < 8) {
+    } else if (formData.password.length < 8) {
       setInvalidPassword(true);
       setErrorValue("Password is at least 8 letters");
     } else {
       // Everything went okay
-
+      console.log("HWER");
       setErrorValue("Loging you in...");
       const res = await signIn("credentials", {
         redirect: false,
-        email: emailValue,
-        password: passwordValue,
+        email: formData.email,
+        password: formData.password,
       });
 
       if (res?.error) {
@@ -48,7 +52,7 @@ export default async function Login() {
         setInvalidEmail(true);
         setInvalidPassword(true);
       } else {
-        redirect("/");
+        route.push("/");
       }
     }
   };
@@ -60,7 +64,6 @@ export default async function Login() {
           <button
             className="p-2  justify-center w-full bg-black text-white rounded-lg flex gap-3"
             onClick={(e) => {
-              e.preventDefault();
               signIn("google");
             }}
           >
@@ -82,16 +85,16 @@ export default async function Login() {
         </div>
         <div className="bg-gray-300 rounded-full w-full h-1 mx-auto"></div>
 
-        <form className="flex flex-col gap-4">
+        <form className="flex flex-col gap-4" onSubmit={validLogin}>
           <input
             type="email"
+            name="email"
             placeholder="example@mail.com"
             id="username"
             className={`bg-gray-200 focus:border-none focus:outline-none p-2 rounded-md ${
               invalidEmail ? "animate-wiggle bg-red-500" : ""
             }`}
-            onChange={(e) => {
-              setEmailValue(e.target.value);
+            onChange={() => {
               setInvalidEmail(false);
               setErrorValue("");
             }}
@@ -100,14 +103,13 @@ export default async function Login() {
           <input
             type="password"
             placeholder="Password"
+            name="password"
             id="password"
             className={`bg-gray-200 focus:border-none focus:outline-none p-2 rounded-md ${
               invalidPassword ? "animate-wiggle bg-red-500" : ""
             }`}
-            onChange={(e) => {
-              setPasswordValue(e.target.value);
+            onChange={() => {
               setInvalidPassword(false);
-
               setErrorValue("");
             }}
           />
@@ -122,7 +124,7 @@ export default async function Login() {
           <button
             type="submit"
             className="p-2 w-full bg-black text-white rounded-lg mx-auto"
-            onClick={validLogin}
+            // onClick={validLogin}
           >
             Login with email
           </button>
