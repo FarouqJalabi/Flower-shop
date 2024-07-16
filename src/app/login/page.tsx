@@ -1,11 +1,11 @@
 "use client";
 import Image from "next/image";
 import { useState } from "react";
-import { signIn } from "next-auth/react";
+import { getProviders, signIn } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
-export default function Login() {
+export default async function Login() {
   //Validations
   const route = useRouter();
   const [invalidEmail, setInvalidEmail] = useState(false);
@@ -16,6 +16,7 @@ export default function Login() {
 
   const [errorValue, setErrorValue] = useState("");
 
+  // console.log(await getProviders(), "Get providers");
   const validLogin = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     //Valid email?
@@ -25,7 +26,6 @@ export default function Login() {
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailValue)) {
       setInvalidEmail(true);
       setErrorValue("The email is not valid");
-      console.log("WE?");
     } else if (passwordValue.length < 8) {
       setInvalidPassword(true);
       setErrorValue("Password is at least 8 letters");
@@ -38,8 +38,9 @@ export default function Login() {
         email: emailValue,
         password: passwordValue,
       });
+
       if (res?.error) {
-        setErrorValue("Either the password or gmail is wrong");
+        setErrorValue("Either the password or email is wrong");
         setInvalidEmail(true);
         setInvalidPassword(true);
       } else {
@@ -52,7 +53,13 @@ export default function Login() {
     <div className="flex bg-gray-400 w-full h-full fixed left-0 top-0 z-20 items-center justify-center ">
       <section className="flex flex-col gap-4 bg-white p-8 h-min rounded-2xl w-80">
         <div className="flex gap-3">
-          <button className="p-2  justify-center w-full bg-black text-white rounded-lg flex gap-3">
+          <button
+            className="p-2  justify-center w-full bg-black text-white rounded-lg flex gap-3"
+            onClick={(e) => {
+              e.preventDefault();
+              signIn("google");
+            }}
+          >
             Login with
             <Image
               src={"/google.svg"}

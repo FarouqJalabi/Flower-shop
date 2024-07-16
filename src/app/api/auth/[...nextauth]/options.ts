@@ -1,8 +1,7 @@
 import type { NextAuthOptions } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials";
-import { PrismaClient } from "@prisma/client";
-const prisma = new PrismaClient();
+import { prisma } from "@/app/db";
 
 export const options: NextAuthOptions = {
   session: {
@@ -43,6 +42,22 @@ export const options: NextAuthOptions = {
     }),
   ],
   callbacks: {
+    async signIn({ account, profile }) {
+      console.log(account?.provider == "google", profile != null, "GOgle");
+      if (account?.provider === "google" && profile != null) {
+        let prisma_user = await prisma.user.upsert({
+          where: { email: profile.email! },
+          update: {},
+          create: {
+            name: profile.name!,
+            email: profile.email!,
+            password: "google",
+          },
+        });
+      }
+
+      return true; // Do different verification for other providers that don't have `email_verified`
+    },
     async session({ session, token }) {
       if (token) {
         session.accessToken = token.accessToken as string;
@@ -51,8 +66,13 @@ export const options: NextAuthOptions = {
     },
     async jwt({ token, user }) {
       if (user) {
-        token.accessToken = user.id;
-        token.user = user;
+        let prisma_user = await prisma.user.findFirst({
+          where: { email: user.email! },
+        });
+        if (prisma_user) {
+          token.accessToken = prisma_user.id;
+          token.user = user;
+        }
       }
       return token;
     },

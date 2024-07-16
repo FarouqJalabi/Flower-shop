@@ -10,7 +10,6 @@ export default function LikeButton({ id }: { id: string }) {
   const { hearts, addHeart, removeHeart } = useGlobalContext();
   const { status } = useSession();
 
-  console.log(status);
   const likeFlower = async (liked: boolean) => {
     await fetch("api/flowerLiked", {
       method: "POST",
