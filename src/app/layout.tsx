@@ -11,9 +11,9 @@ import { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Flower Shop",
   description: "Mock flower shop",
-  other: {
-    "google-site-verification": "ZVGdHmoplW_pBTM-dYjSBsi42jYQ1pnj6pWFqJLlInI",
-  },
+  // other: {
+  //   "google-site-verification": "ZVGdHmoplW_pBTM-dYjSBsi42jYQ1pnj6pWFqJLlInI",
+  // },
 };
 
 const inter = Inter({ subsets: ["latin"] });
@@ -31,6 +31,12 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
+      <head>
+        <meta
+          name="google-site-verification"
+          content="ZVGdHmoplW_pBTM-dYjSBsi42jYQ1pnj6pWFqJLlInI"
+        />
+      </head>
       {/*! ERROR comes from this  */}
       <body className={`${inter.className} ${jua.variable} overflow-x-hidden`}>
         <NextAuthProvider>
