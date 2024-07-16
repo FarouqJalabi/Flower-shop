@@ -54,11 +54,58 @@ export async function POST(req: NextRequest) {
       })
     );
   } catch (error) {
+    console.log(error, "ERROR");
     return NextResponse.json(
       { error: error },
       {
         status: 500,
-        statusText: "Failed to upload flowerPreview",
+        statusText: "Some title already exist",
+      }
+    );
+  }
+}
+
+export async function PATCH(req: NextRequest) {
+  const token = await getToken({ req });
+  const body = await req.json();
+
+  if (!token) {
+    return NextResponse.json({}, { status: 401 });
+  }
+
+  const tokenValues = JSON.stringify(token, null, 2);
+  const userEmail = JSON.parse(tokenValues)?.user?.email;
+
+  if (userEmail !== "admin@hotmail.com") {
+    return NextResponse.json({}, { status: 403 });
+  }
+
+  let { previews } = body;
+
+  if (!previews) {
+    return NextResponse.json({}, { status: 400, statusText: "Missing data" });
+  }
+
+  try {
+    await prisma.$transaction(async (tx) => {
+      for (let i in previews) {
+        const order = previews.length - Number(i);
+        await tx.flowerPreviews.update({
+          where: { id: previews[i].id },
+          data: { order: order },
+        });
+      }
+    });
+    return NextResponse.json(
+      {},
+      { status: 200, statusText: "Updated order succefuly" }
+    );
+  } catch (error) {
+    return NextResponse.json(
+      { error: error },
+      {
+        status: 500,
+        statusText: "Failed to update flowerPreview",
       }
     );
   }

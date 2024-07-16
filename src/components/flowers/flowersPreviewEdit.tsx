@@ -142,15 +142,14 @@ export default function FlowersPreviewEdit({ tags }: props) {
       >
         <h1 className="font-jua text-3xl">Create a new Flower Preview</h1>
         <div className="flex gap-10 mx-2">
-          <div className="flex flex-col gap-2 ">
+          <div className="flex flex-col gap-2">
             <input
               type="text"
               name="title"
               placeholder="Title"
               className="bg-gray-200 focus:border-none focus:outline-none p-2 rounded-md text-2xl font-extrabold w-3/4"
             />
-            <input
-              type="text"
+            <textarea
               name="underTitle"
               placeholder="underTitle/description"
               className="bg-gray-200 focus:border-none focus:outline-none p-2 rounded-md text-xl w-full "
