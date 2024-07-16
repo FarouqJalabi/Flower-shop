@@ -89,8 +89,8 @@ export default function FlowersPreviewEdit() {
             </button>
           </div>
         </form>
-        {Array.from(Array(flowersCount)).map(() => {
-          return <FlowerEdit />;
+        {Array.from(Array(flowersCount)).map((v) => {
+          return <FlowerEdit key={v} />;
         })}
         <div className="flex gap-2">
           <button
