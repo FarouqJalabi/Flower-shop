@@ -63,7 +63,7 @@ export default function Hero() {
             <div className="relative aspect-square h-12 mt-[-16px]  ">
               <Image
                 src={"/package.svg"}
-                alt={"Outline of a medal with a star in the middle."}
+                alt={"An outline of a white box"}
                 fill
                 style={{ objectFit: "contain" }}
               />
@@ -81,7 +81,7 @@ export default function Hero() {
             <div className="relative aspect-square h-12 mt-[-16px]  ">
               <Image
                 src={"/profileTick.svg"}
-                alt={"Outline of a medal with a star in the middle."}
+                alt={"An outline of a profile picture with a tic"}
                 fill
                 style={{ objectFit: "contain" }}
               />
@@ -98,7 +98,7 @@ export default function Hero() {
             <div className="relative aspect-square h-12 mt-[-16px]  ">
               <Image
                 src={"/fastTruck.svg"}
-                alt={"Outline of a medal with a star in the middle."}
+                alt={"An outline of a truck thta's speeding."}
                 fill
                 style={{ objectFit: "contain" }}
               />

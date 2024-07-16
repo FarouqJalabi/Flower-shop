@@ -5,6 +5,7 @@ import { prisma } from "./db";
 import { getServerSession } from "next-auth";
 import { options } from "@/app/api/auth/[...nextauth]/options";
 
+
 export default async function Home() {
   const data = await getServerSession(options);
   let flowerPreviews = await prisma.flowerPreviews.findMany({
